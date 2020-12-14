@@ -63,8 +63,7 @@ async function getData() {
 
   select.value = "ukraine"
 
-  select.addEventListener("change", () => {
-    // document.querySelector(".country-chart").innerHTML = "";
+  select.addEventListener("change", () => {    
     drawChart(select.value);
   });
 
