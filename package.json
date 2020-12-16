@@ -57,6 +57,8 @@
     "webpack-dev-server": "^3.5.0"
   },
   "dependencies": {
-    "bootstrap": "^5.0.0-beta1"
+    "bootstrap": "^5.0.0-beta1",
+    "chart.js": "^2.9.4",
+    "yarn": "^1.22.10"
   }
 }
