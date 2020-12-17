@@ -17,7 +17,11 @@ class App extends Component {
   }
 
   render() {
-    Object.keys(this.components).forEach(component => this.components[component].render(this.app));
+    Object.keys(this.components).forEach(component => {
+      if (this.components[component].render) {
+        this.components[component].render(this.app);
+      }
+    });
   }
 
   start() {
