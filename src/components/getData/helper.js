@@ -52,19 +52,17 @@ function createCountryList(flags, data) {
       country.recovered = data.Countries[indexOfCountry].TotalRecovered;
 
       // Данные по стране за сегодня на 100к населения
-      country.newDeathPOHT = parseFloat(POHT(country.population, country.newDeaths).toFixed(3));
+      country.newDeathPOHT = parseFloat(POHT(country.population, country.newDeath).toFixed(3));
       country.newRecoveredPOHT = parseFloat(
         POHT(country.population, country.newRecovered).toFixed(3)
       );
       country.totalConfirmedPOHT = parseFloat(
-        POHT(country.population, country.totalConfirmed).toFixed(3)
+        POHT(country.population, country.confirmed).toFixed(3)
       );
 
       // Данные по стране за все время на 100к населения
-      country.totalDeathPOHT = parseFloat(POHT(country.population, country.totalDeaths).toFixed(3));
-      country.totalRecoveredPOHT = parseFloat(
-        POHT(country.population, country.totalRecovered).toFixed(3)
-      );
+      country.deathPOHT = parseFloat(POHT(country.population, country.death).toFixed(3));
+      country.recoveredPOHT = parseFloat(POHT(country.population, country.recovered).toFixed(3));
       country.newConfirmedPOHT = parseFloat(
         POHT(country.population, country.newConfirmed).toFixed(3)
       );
