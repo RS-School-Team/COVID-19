@@ -18,6 +18,7 @@ export default class GetData extends Component {
     await this.getInitData();
     await this.getCountryList();
     await this.getDataByCountry(1);
+    this.events.addEventList('countryChoosed', [this.getDataByCountry.bind(this)]);
     console.log(this.state);
   }
 
@@ -39,6 +40,7 @@ export default class GetData extends Component {
       this.state.worldData = getWorldDataForTable(this.worldCases);
       this.state.worldData.chartData = getWorldDataForChart(this.worldCases);
     }
+    this.events.dispatchEvent('initDataGot');
   }
 
   async getCountryList() {
@@ -53,13 +55,12 @@ export default class GetData extends Component {
     if (this.flags && this.data) {
       this.state.countriesList = createCountryList(this.flags, this.data);
     }
+    this.events.dispatchEvent('countryListGot');
   }
 
   async getDataByCountry(index) {
-    console.log(this.state.countriesList);
     this.currentCountry = this.state.countriesList[index].slug;
     console.log(`https://api.covid19api.com/total/country/${this.currentCountry}`);
-    // this.state.countryData.population = this.state.countriesList[index].population;
     try {
       this.currentCountryData = await (
         await fetch(`https://api.covid19api.com/total/country/${this.currentCountry}`)
@@ -68,97 +69,16 @@ export default class GetData extends Component {
       console.log(e);
     }
     if (this.currentCountryData) {
-      // this.createDataByCountryFOrChart();
       this.state.countryData = createDataByCountryForChart(
         this.currentCountryData,
         this.state.countriesList[index].population
       );
     }
+    this.events.dispatchEvent('dataByCountryGot');
   }
-
-  // createDataByCountryFOrChart() {
-  //   this.state.countryData.Label = this.currentCountryData[0].Country;
-  //   this.state.countryData.Dates = [];
-
-  //   this.state.countryData.NewConfirmed = [];
-  //   this.state.countryData.NewRecovered = [];
-  //   this.state.countryData.NewDeaths = [];
-
-  //   this.state.countryData.Confirmed = [];
-  //   this.state.countryData.Recovered = [];
-  //   this.state.countryData.Deaths = [];
-
-  //   this.state.countryData.NewConfirmedPerOneHundredThousands = [];
-  //   this.state.countryData.NewRecoveredPerOneHundredThousands = [];
-  //   this.state.countryData.NewDeathsPerOneHundredThousands = [];
-
-  //   this.state.countryData.ConfirmedPerOneHundredThousands = [];
-  //   this.state.countryData.RecoveredPerOneHundredThousands = [];
-  //   this.state.countryData.DeathsPerOneHundredThousands = [];
-
-  //   this.currentCountryData.forEach((e, i) => {
-  //     // Данные для каждого дня дня общие и на 100тыс населения
-  //     if (i === 0) {
-  //       this.state.countryData.NewConfirmed.push(e.Confirmed);
-  //       this.state.countryData.NewRecovered.push(e.Deaths);
-  //       this.state.countryData.NewDeaths.push(e.Recovered);
-
-  //       this.state.countryData.NewConfirmedPerOneHundredThousands.push(
-  //         this.perOneHundredThousands(this.state.countryData.population, e.Confirmed)
-  //       );
-  //       this.state.countryData.NewRecoveredPerOneHundredThousands.push(
-  //         this.perOneHundredThousands(this.state.countryData.population, e.Deaths)
-  //       );
-  //       this.state.countryData.NewDeathsPerOneHundredThousands.push(
-  //         this.perOneHundredThousands(this.state.countryData.population, e.Recovered)
-  //       );
-  //     } else {
-  //       this.state.countryData.NewConfirmed.push(
-  //         e.Confirmed - this.currentCountryData[i - 1].Confirmed
-  //       );
-  //       this.state.countryData.NewRecovered.push(e.Deaths - this.currentCountryData[i - 1].Deaths);
-  //       this.state.countryData.NewDeath.push(
-  //         e.Recovered - this.currentCountryData[i - 1].Recovered
-  //       );
-
-  //       this.state.countryData.NewConfirmedPerOneHundredThousands.push(
-  //         this.perOneHundredThousands(
-  //           this.state.countryData.population,
-  //           e.Confirmed - this.currentCountryData[i - 1].Confirmed
-  //         )
-  //       );
-  //       this.state.countryData.NewRecoveredPerOneHundredThousands.push(
-  //         this.perOneHundredThousands(
-  //           this.state.countryData.population,
-  //           e.Recovered - this.currentCountryData[i - 1].Recovered
-  //         )
-  //       );
-  //       this.state.countryData.NewDeathsPerOneHundredThousands.push(
-  //         this.perOneHundredThousands(
-  //           this.state.countryData.population,
-  //           e.Deaths - this.currentCountryData[i - 1].Deaths
-  //         )
-  //       );
-
-  //       // Данные общие
-  //       this.state.countryData.Confirmed.push(e.Confirmed);
-  //       this.state.countryData.Recovered.push(e.Recovered);
-  //       this.state.countryData.Deaths.push(e.Deaths);
-
-  //       // Данные общие на 100к населения
-  //       this.state.countryData.Confirmed.push(
-  //         this.perOneHundredThousands(this.state.countryData.population, e.Confirmed)
-  //       );
-  //       this.state.countryData.Recovered.push(
-  //         this.perOneHundredThousands(this.state.countryData.population, e.Recovered)
-  //       );
-  //       this.state.countryData.Deaths.push(
-  //         this.perOneHundredThousands(this.state.countryData.population, e.Deaths)
-  //       );
-  //     }
-
-  //     // Даты
-  //     this.state.countryData.currentCountryDates.push(e.Date.slice(0, 10));
-  //   });
-  // }
 }
+
+/* <button class="asdf" data-click = "имя ивента которого мне надо задиспатчить"
+   data-name="аргументы которые я хочу передать"></button> */
+
+// [['key', 'название кнопки и тд'], ['dailyCasesByCountryToday', 'Daily Cases'], ['dailyCasesByCountryToday', 'Daily Cases'], ['dailyCasesByCountryToday', 'Daily Cases'], ['dailyCasesByCountryToday', 'Daily Cases'], ]

@@ -14,23 +14,23 @@ function getWorldDataForTable(worldCases) {
 
   // Данные по миру за сегодня
   data.newConfirmed = today.positiveIncrease;
-  data.newDeaths = today.deathIncrease;
+  data.newDeath = today.deathIncrease;
   data.newRecovered = today.recovered - yesterday.recovered;
 
   // Данные по миру за все время
-  data.totalConfirmed = today.positive;
-  data.totalDeaths = today.death;
-  data.totalRecovered = today.recovered;
+  data.confirmed = today.positive;
+  data.death = today.death;
+  data.recovered = today.recovered;
 
   // Данные по миру за сегодня на 100к населения
   data.newConfirmedPOHT = POHT(population, today.positiveIncrease);
-  data.newDeathsPOHT = POHT(population, today.deathIncrease);
+  data.newDeathPOHT = POHT(population, today.deathIncrease);
   data.newRecoveredPOHT = POHT(population, today.positiveIncrease);
 
   // Данные по миру за все время на 100к населения
-  data.totalConfirmedPOHT = POHT(population, today.positive);
-  data.totalDeathsPOHT = POHT(population, today.death);
-  data.totalRecoveredPOHT = POHT(population, today.recovered);
+  data.confirmedPOHT = POHT(population, today.positive);
+  data.deathPOHT = POHT(population, today.death);
+  data.recoveredPOHT = POHT(population, today.recovered);
 
   return data;
 }
@@ -43,23 +43,31 @@ function createCountryList(flags, data) {
       country.countryCode = data.Countries[indexOfCountry].CountryCode;
       // Данные по стране за сегодня
       country.newConfirmed = data.Countries[indexOfCountry].NewConfirmed;
-      country.newDeaths = data.Countries[indexOfCountry].NewDeaths;
+      country.newDeath = data.Countries[indexOfCountry].NewDeaths;
       country.newRecovered = data.Countries[indexOfCountry].NewRecovered;
 
       // Данные по стране за все время
-      country.totalConfirmed = data.Countries[indexOfCountry].TotalConfirmed;
-      country.totalDeaths = data.Countries[indexOfCountry].TotalDeaths;
-      country.totalRecovered = data.Countries[indexOfCountry].TotalRecovered;
+      country.confirmed = data.Countries[indexOfCountry].TotalConfirmed;
+      country.death = data.Countries[indexOfCountry].TotalDeaths;
+      country.recovered = data.Countries[indexOfCountry].TotalRecovered;
 
       // Данные по стране за сегодня на 100к населения
-      country.newDeathsPOHT = POHT(country.population, country.NewDeaths).toFixed(3);
-      country.newRecoveredPOHT = POHT(country.population, country.newRecovered).toFixed(3);
-      country.totalConfirmedPOHT = POHT(country.population, country.totalConfirmed).toFixed(3);
+      country.newDeathPOHT = parseFloat(POHT(country.population, country.newDeaths).toFixed(3));
+      country.newRecoveredPOHT = parseFloat(
+        POHT(country.population, country.newRecovered).toFixed(3)
+      );
+      country.totalConfirmedPOHT = parseFloat(
+        POHT(country.population, country.totalConfirmed).toFixed(3)
+      );
 
       // Данные по стране за все время на 100к населения
-      country.totalDeathsPOHT = POHT(country.population, country.totalDeaths).toFixed(3);
-      country.totalRecoveredPOHT = POHT(country.population, country.totalRecovered).toFixed(3);
-      country.newConfirmedPOHT = POHT(country.population, country.newConfirmed).toFixed(3);
+      country.totalDeathPOHT = parseFloat(POHT(country.population, country.totalDeaths).toFixed(3));
+      country.totalRecoveredPOHT = parseFloat(
+        POHT(country.population, country.totalRecovered).toFixed(3)
+      );
+      country.newConfirmedPOHT = parseFloat(
+        POHT(country.population, country.newConfirmed).toFixed(3)
+      );
 
       return true;
     }
@@ -75,25 +83,25 @@ function getWorldDataForChart(worldCases) {
   data.worldCasesDate = [];
 
   data.NewConfirmed = [];
-  data.NewDeaths = [];
+  data.NewDeath = [];
   data.NewRecovered = [];
 
   data.Confirmed = [];
-  data.Deaths = [];
+  data.Death = [];
   data.Recovered = [];
 
   data.NewConfirmedPOHT = [];
-  data.NewDeathsPOHT = [];
+  data.NewDeathPOHT = [];
   data.NewRecoveredPOHT = [];
 
   data.ConfirmedPOHT = [];
-  data.DeathsPOHT = [];
+  data.DeathPOHT = [];
   data.RecoveredPOHT = [];
 
   worldCases.forEach((day, index) => {
     // Данные за сегодня
     data.NewConfirmed.push(day.positiveIncrease);
-    data.NewDeaths.push(day.deathIncrease);
+    data.NewDeath.push(day.deathIncrease);
 
     // Вычисления выздоровевших в день
     if (index === 0) {
@@ -106,16 +114,16 @@ function getWorldDataForChart(worldCases) {
 
     // Данные за все время
     data.Confirmed.push(day.positive);
-    data.Deaths.push(day.death);
+    data.Death.push(day.death);
     data.Recovered.push(day.recovered);
 
     // Данные за сегодня на 100к населения
     data.NewConfirmedPOHT.push(POHT(population, day.positiveIncrease));
-    data.NewDeathsPOHT.push(POHT(population, day.deathIncrease));
+    data.NewDeathPOHT.push(POHT(population, day.deathIncrease));
 
     // Данные за все время на 100к населения
     data.ConfirmedPOHT.push(POHT(population, day.positive));
-    data.DeathsPOHT.push(POHT(population, day.death));
+    data.DeathPOHT.push(POHT(population, day.death));
     data.RecoveredPOHT.push(POHT(population, day.recovered));
 
     // Даты
@@ -125,61 +133,57 @@ function getWorldDataForChart(worldCases) {
 }
 
 function createDataByCountryForChart(countryData, population) {
-  console.log(countryData);
   const data = {};
-  data.Label = countryData[0].Country;
-  data.Dates = [];
+  data.label = countryData[0].Country;
+  data.dates = [];
 
-  data.NewConfirmed = [];
-  data.NewRecovered = [];
-  data.NewDeaths = [];
+  data.confirmed = [];
+  data.recovered = [];
+  data.death = [];
 
-  data.NewConfirmed = [];
-  data.NewRecovered = [];
-  data.NewDeaths = [];
+  data.newConfirmed = [];
+  data.newRecovered = [];
+  data.newDeath = [];
 
-  data.NewConfirmedPOHT = [];
-  data.NewRecoveredPOHT = [];
-  data.NewDeathsPOHT = [];
+  data.newConfirmedPOHT = [];
+  data.newRecoveredPOHT = [];
+  data.newDeathPOHT = [];
 
-  data.ConfirmedPOHT = [];
-  data.RecoveredPOHT = [];
-  data.DeathsPOHT = [];
+  data.confirmedPOHT = [];
+  data.recoveredPOHT = [];
+  data.deathPOHT = [];
 
   countryData.forEach((e, i) => {
+    // Данные общие
+    data.confirmed.push(e.Confirmed);
+    data.recovered.push(e.Recovered);
+    data.death.push(e.Deaths);
+
+    // Данные общие на 100к населения
+    data.confirmedPOHT.push(POHT(population, e.Confirmed));
+    data.recoveredPOHT.push(POHT(population, e.Recovered));
+    data.deathPOHT.push(POHT(population, e.Deaths));
     // Данные для каждого дня дня общие и на 100тыс населения
     if (i === 0) {
-      data.NewConfirmed.push(e.Confirmed);
-      data.NewRecovered.push(e.Deaths);
-      data.NewDeaths.push(e.Recovered);
+      data.newConfirmed.push(e.Confirmed);
+      data.newRecovered.push(e.Deaths);
+      data.newDeath.push(e.Recovered);
 
-      data.NewConfirmedPOHT.push(POHT(population, e.Confirmed));
-      data.NewRecoveredPOHT.push(POHT(population, e.Deaths));
-      data.NewDeathsPOHT.push(POHT(population, e.Recovered));
+      data.newConfirmedPOHT.push(POHT(population, e.Confirmed));
+      data.newRecoveredPOHT.push(POHT(population, e.Deaths));
+      data.newDeathPOHT.push(POHT(population, e.Recovered));
     } else {
-      data.NewConfirmed.push(e.Confirmed - countryData[i - 1].Confirmed);
-      data.NewRecovered.push(e.Deaths - countryData[i - 1].Deaths);
-      data.NewDeath.push(e.Recovered - countryData[i - 1].Recovered);
+      data.newConfirmed.push(e.Confirmed - countryData[i - 1].Confirmed);
+      data.newRecovered.push(e.Deaths - countryData[i - 1].Deaths);
+      data.newDeath.push(e.Recovered - countryData[i - 1].Recovered);
 
-      data.NewConfirmedPOHT.push(POHT(population, e.Confirmed - countryData[i - 1].Confirmed));
-      data.NewRecoveredPOHT.push(POHT(population, e.Recovered - countryData[i - 1].Recovered));
-      data.NewDeathsPOHT.push(POHT(population, e.Deaths - countryData[i - 1].Deaths));
-
-      // Данные общие
-      data.Confirmed.push(e.Confirmed);
-      data.Recovered.push(e.Recovered);
-      data.Deaths.push(e.Deaths);
-
-      // Данные общие на 100к населения
-      data.Confirmed.push(POHT(population, e.Confirmed));
-      data.Recovered.push(POHT(population, e.Recovered));
-      data.Deaths.push(POHT(population, e.Deaths));
+      data.newConfirmedPOHT.push(POHT(population, e.Confirmed - countryData[i - 1].Confirmed));
+      data.newRecoveredPOHT.push(POHT(population, e.Recovered - countryData[i - 1].Recovered));
+      data.newDeathPOHT.push(POHT(population, e.Deaths - countryData[i - 1].Deaths));
     }
-
     // Даты
-    data.Dates.push(e.Date.slice(0, 10));
+    data.dates.push(e.Date.slice(0, 10));
   });
-  console.log(data);
   return data;
 }
 
