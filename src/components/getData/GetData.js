@@ -16,10 +16,14 @@ export default class GetData extends Component {
 
   async init() {
     await this.getInitData();
+
+    this.events.dispatchEvent('initDataGot');
+
     await this.getCountryList();
+    this.events.dispatchEvent('dataByCountryGot');
+
     await this.getDataByCountry(1);
     this.events.addEventList('countryChoosed', [this.getDataByCountry.bind(this)]);
-    console.log(this.state);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -40,7 +44,6 @@ export default class GetData extends Component {
       this.state.worldData = getWorldDataForTable(this.worldCases);
       this.state.worldData.chartData = getWorldDataForChart(this.worldCases);
     }
-    this.events.dispatchEvent('initDataGot');
   }
 
   async getCountryList() {
@@ -55,7 +58,6 @@ export default class GetData extends Component {
     if (this.flags && this.data) {
       this.state.countriesList = createCountryList(this.flags, this.data);
     }
-    this.events.dispatchEvent('countryListGot');
   }
 
   async getDataByCountry(index) {
@@ -74,7 +76,6 @@ export default class GetData extends Component {
         this.state.countriesList[index].population
       );
     }
-    this.events.dispatchEvent('dataByCountryGot');
   }
 }
 

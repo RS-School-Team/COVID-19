@@ -17,6 +17,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const app = new App(appTag);
   app.init();
-  app.render();
   app.start();
 });
