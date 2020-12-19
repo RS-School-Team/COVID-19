@@ -29,6 +29,7 @@ class App extends Component {
       if (findTarget(target, 'change')) {
         const { action } = findTarget(target, 'change');
         const name = target.value;
+        // const index = target.selectedIndex;
         this.events.dispatchEvent(action.toString(), name.toString());
       }
     });

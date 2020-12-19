@@ -33,8 +33,9 @@ export default class GetData extends Component {
 
   async getInitData() {
     try {
-      this.worldCases = await (
-        await fetch('https://api.covidtracking.com/v1/us/daily.json')
+      this.worldCases = await (await fetch('https://api.covid19api.com/summary')).json();
+      this.worldCasesForChart = await (
+        await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=366')
       ).json();
     } catch (e) {
       console.log(e);
@@ -42,7 +43,7 @@ export default class GetData extends Component {
 
     if (this.worldCases) {
       this.state.worldData = getWorldDataForTable(this.worldCases);
-      this.state.worldData.chartData = getWorldDataForChart(this.worldCases);
+      this.state.worldData.chartData = getWorldDataForChart(this.worldCasesForChart);
     }
   }
 
@@ -62,7 +63,7 @@ export default class GetData extends Component {
 
   async getDataByCountry(index) {
     this.currentCountry = this.state.countriesList[index].slug;
-    console.log(`https://api.covid19api.com/total/country/${this.currentCountry}`);
+    // console.log(`https://api.covid19api.com/total/country/${this.currentCountry}`);
     try {
       this.currentCountryData = await (
         await fetch(`https://api.covid19api.com/total/country/${this.currentCountry}`)
