@@ -66,21 +66,7 @@ export default class GlobalCasesTable extends Component {
   }
 
   createTableNav() {
-    const arr = [
-      ['confirmed', 'Total Confirmed'],
-      ['death', 'Total Death'],
-      ['recovered', 'Total Recovered'],
-      ['totalConfirmedPOHT', 'Total Comfirmed Per 100,000 Population'],
-      ['deathPOHT', 'Total Deaths Per 100,000 Population'],
-      ['recoveredPOHT', 'Total Recovered Per 100,000 Population'],
-      ['newConfirmed', 'Last Day Confirmed'],
-      ['newDeaths', 'Last Day Death'],
-      ['newRecovered', 'Last Day Recovered'],
-      ['newConfirmedPOHT', 'Last Day Comfirmed Per 100,000 Population'],
-      ['newDeathPOHT', 'Last Day Death Per 100,000 Population'],
-      ['newRecoveredPOHT', 'Last Day Recovered Per 100,000 Population'],
-    ];
-    arr.map(elem =>
+    this.state.data.sortTypes.map(elem =>
       helper.create(
         'option',
         'dropdown-item',
