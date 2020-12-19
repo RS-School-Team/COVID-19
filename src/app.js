@@ -16,14 +16,6 @@ class App extends Component {
     Object.keys(this.components).forEach(component => this.components[component].init(this.app));
   }
 
-  render() {
-    Object.keys(this.components).forEach(component => {
-      if (this.components[component].render) {
-        this.components[component].render(this.app);
-      }
-    });
-  }
-
   start() {
     this.app.addEventListener('click', clicked => {
       const { target } = clicked;
