@@ -1,6 +1,5 @@
 import './style.scss';
 import { APPCONTAINERCLASS, BODYTAG } from './constants/app-constants';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './app';
 import { simpleTag, qs } from './helper';
 

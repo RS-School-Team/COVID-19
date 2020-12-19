@@ -24,6 +24,22 @@ class App extends Component {
         this.events.dispatchEvent(action.toString(), name.toString());
       }
     });
+    this.app.addEventListener('change', clicked => {
+      const { target } = clicked;
+      if (findTarget(target, 'change')) {
+        const { action } = findTarget(target, 'change');
+        const name = target.value;
+        this.events.dispatchEvent(action.toString(), name.toString());
+      }
+    });
+    this.app.addEventListener('input', clicked => {
+      const { target } = clicked;
+      if (findTarget(target, 'input')) {
+        const { action } = findTarget(target, 'input');
+        const name = target.value;
+        this.events.dispatchEvent(action.toString(), name.toString());
+      }
+    });
   }
 }
 
