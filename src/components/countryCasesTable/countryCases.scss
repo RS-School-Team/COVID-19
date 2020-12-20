@@ -1,12 +1,9 @@
 .country-cases{
-    background: rgba(255, 255, 255, 0.07);
     position: relative;
-    
-        position: absolute;
-        min-width: 235px;
+    text-align: center;
+        min-width: 245px;
         min-height: 170px;
-        top:5px;
-        right: 5px;
+        width: 100%;
     
         .country-cases__header{
             width: 100%;

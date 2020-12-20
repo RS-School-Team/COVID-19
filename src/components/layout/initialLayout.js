@@ -18,7 +18,7 @@ export default class InitialLayout extends Component {
     );
     this.mapCasesContainer = helper.create(
       'div',
-      'col-lg-8 col-md-12 map-cases__container',
+      'col-lg-8 col-md-12 map-cases__container py-3',
       null,
       this.mainContainer
     );

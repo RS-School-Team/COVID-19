@@ -9,8 +9,7 @@ class Map extends Component {
     this.map = charts;
   }
 
-  init(containerTag) {
-    this.containerTag = containerTag;
+  init() {
     this.container = document.querySelector('.map__container');
     this.map.charts.load('current', {
       packages: ['geochart'],
