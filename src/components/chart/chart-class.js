@@ -6,7 +6,7 @@ class Graph extends Component {
   constructor() {
     super();
     this.options = {};
-    this.path = 'worldData';
+    this.ind = 0;
   }
 
   init() {
@@ -35,21 +35,26 @@ class Graph extends Component {
     );
   }
 
-  changeDataType(type) {
-    const ind = this.state.dataType.findIndex(e => e[0] === type.toString());
-    // eslint-disable-next-line prefer-destructuring
-    this.dataPath = this.options.data.datasets[0];
-    if (ind < 6) {
-      this.options.type = 'line';
-      this.dataPath.fill = false;
+  changeDataType(arg) {
+    [this.dataPath] = this.options.data.datasets;
+    if (typeof arg[0] === 'string') {
+      this.ind = this.state.dataType.findIndex(e => e[0] === arg.toString());
+      if (this.ind < 6) {
+        this.options.type = 'line';
+        this.dataPath.fill = false;
+      } else {
+        this.options.type = 'bar';
+        this.dataPath.fill = true;
+      }
     } else {
-      this.options.type = 'bar';
-      this.dataPath.fill = true;
+      this.path = this.state.countryData;
     }
-    const [data, label] = this.state.dataType[ind];
+
+    this.cartNav[this.ind].selected = true;
+    const [data, label] = this.state.dataType[this.ind];
+
     this.dataPath.data = this.path[data];
     this.dataPath.label = label;
-    this.cartNav[ind].selected = true;
     this.chart.update();
   }
 
@@ -88,7 +93,9 @@ class Graph extends Component {
       },
     };
     this.chart = new Chart(this.chartContainer, this.options);
-    this.events.addEventList('sortChanged', [this.changeDataType.bind(this)]);
+    this.events.addEventList('sortChanged', [(...args) => this.changeDataType(...args)]);
+    // this.events.addEventList('sortChanged', [this.changeDataType.bind(this)]);
+    this.events.addEventList('dataCountryGot', [this.changeDataType.bind(this)]);
   }
 }
 

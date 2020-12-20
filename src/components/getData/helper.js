@@ -113,6 +113,7 @@ function getWorldDataForChart(worldCases) {
 }
 
 function createDataByCountryForChart(countryData, population) {
+  console.log(countryData);
   const data = {};
   data.label = countryData[0].Country;
   data.dates = [];

@@ -22,7 +22,6 @@ export default class GetData extends Component {
     await this.getCountryList();
     this.events.dispatchEvent('dataByCountryGot');
 
-    await this.getDataByCountry(1);
     this.events.addEventList('countryChoosed', [this.getDataByCountry.bind(this)]);
   }
 
@@ -77,6 +76,7 @@ export default class GetData extends Component {
         this.state.countriesList[index].population
       );
     }
+    this.events.dispatchEvent('dataCountryGot');
   }
 }
 
