@@ -23,7 +23,7 @@ class Graph extends Component {
   }
 
   createChartNav() {
-    this.state.dataType.map(elem =>
+    this.state.data.sortTypes.map(elem =>
       helper.create(
         'option',
         'dropdown-item',
@@ -38,7 +38,7 @@ class Graph extends Component {
   changeDataType(arg) {
     [this.dataPath] = this.options.data.datasets;
     if (typeof arg[0] === 'string') {
-      this.ind = this.state.dataType.findIndex(e => e[0] === arg.toString());
+      this.ind = this.state.data.sortTypes.findIndex(e => e[0] === arg.toString());
       if (this.ind < 6) {
         this.options.type = 'line';
         this.dataPath.fill = false;
@@ -51,7 +51,7 @@ class Graph extends Component {
     }
 
     this.cartNav[this.ind].selected = true;
-    const [data, label] = this.state.dataType[this.ind];
+    const [data, label] = this.state.data.sortTypes[this.ind];
 
     this.dataPath.data = this.path[data];
     this.dataPath.label = label;
