@@ -63,6 +63,7 @@ export default class GlobalCasesTable extends Component {
     });
     this.tableList.innerHTML = '';
     this.tableList.append(...this.buttonsList);
+    this.tableNav.value = sortType;
   }
 
   createTableNav() {

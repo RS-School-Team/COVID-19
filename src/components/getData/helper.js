@@ -7,30 +7,31 @@ function POHT(population, cases) {
 }
 
 function getWorldDataForTable(worldCases) {
-  const today = worldCases[0];
-  const yesterday = worldCases[1];
+  // const today = worldCases[0];
+  // const yesterday = worldCases[1];
+  const cases = worldCases.Global;
   const population = 7850000000;
   const data = {};
 
   // Данные по миру за сегодня
-  data.newConfirmed = today.positiveIncrease;
-  data.newDeath = today.deathIncrease;
-  data.newRecovered = today.recovered - yesterday.recovered;
+  data.newConfirmed = cases.NewConfirmed;
+  data.newDeath = cases.NewDeaths;
+  data.newRecovered = cases.NewRecovered;
 
   // Данные по миру за все время
-  data.confirmed = today.positive;
-  data.death = today.death;
-  data.recovered = today.recovered;
+  data.confirmed = cases.TotalConfirmed;
+  data.death = cases.TotalDeaths;
+  data.recovered = cases.TotalRecovered;
 
   // Данные по миру за сегодня на 100к населения
-  data.newConfirmedPOHT = POHT(population, today.positiveIncrease);
-  data.newDeathPOHT = POHT(population, today.deathIncrease);
-  data.newRecoveredPOHT = POHT(population, today.positiveIncrease);
+  data.newConfirmedPOHT = POHT(population, data.newConfirmed);
+  data.newDeathPOHT = POHT(population, data.newDeath);
+  data.newRecoveredPOHT = POHT(population, data.newRecovered);
 
   // Данные по миру за все время на 100к населения
-  data.confirmedPOHT = POHT(population, today.positive);
-  data.deathPOHT = POHT(population, today.death);
-  data.recoveredPOHT = POHT(population, today.recovered);
+  data.confirmedPOHT = POHT(population, data.confirmed);
+  data.deathPOHT = POHT(population, data.death);
+  data.recoveredPOHT = POHT(population, data.recovered);
 
   return data;
 }
@@ -56,9 +57,7 @@ function createCountryList(flags, data) {
       country.newRecoveredPOHT = parseFloat(
         POHT(country.population, country.newRecovered).toFixed(3)
       );
-      country.totalConfirmedPOHT = parseFloat(
-        POHT(country.population, country.confirmed).toFixed(3)
-      );
+      country.confirmedPOHT = parseFloat(POHT(country.population, country.confirmed).toFixed(3));
 
       // Данные по стране за все время на 100к населения
       country.deathPOHT = parseFloat(POHT(country.population, country.death).toFixed(3));
@@ -74,63 +73,47 @@ function createCountryList(flags, data) {
   return countriesList;
 }
 
+function getNewCases(arr) {
+  const res = [];
+  arr.forEach((cases, i) => {
+    if (i === 0) {
+      res.push(cases);
+    } else {
+      res.push(cases - arr[i - 1]);
+    }
+  });
+  return res;
+}
+
 function getWorldDataForChart(worldCases) {
-  // Data for chart
+  const cases = Object.values(worldCases.cases).sort((a, b) => a - b);
+  const deaths = Object.values(worldCases.deaths).sort((a, b) => a - b);
+  const recovered = Object.values(worldCases.recovered).sort((a, b) => a - b);
+  const dates = Object.keys(worldCases.cases);
   const population = 7850000000;
   const data = {};
-  data.worldCasesDate = [];
+  data.worldCasesDate = dates;
 
-  data.NewConfirmed = [];
-  data.NewDeath = [];
-  data.NewRecovered = [];
+  data.newConfirmed = getNewCases(cases);
+  data.newDeath = getNewCases(deaths);
+  data.newRecovered = getNewCases(recovered);
 
-  data.Confirmed = [];
-  data.Death = [];
-  data.Recovered = [];
+  data.confirmed = cases;
+  data.death = deaths;
+  data.recovered = recovered;
 
-  data.NewConfirmedPOHT = [];
-  data.NewDeathPOHT = [];
-  data.NewRecoveredPOHT = [];
+  data.newConfirmedPOHT = data.newConfirmed.map(e => POHT(population, e));
+  data.newDeathPOHT = data.newDeath.map(e => POHT(population, e));
+  data.newRecoveredPOHT = data.newRecovered.map(e => POHT(population, e));
 
-  data.ConfirmedPOHT = [];
-  data.DeathPOHT = [];
-  data.RecoveredPOHT = [];
-
-  worldCases.forEach((day, index) => {
-    // Данные за сегодня
-    data.NewConfirmed.push(day.positiveIncrease);
-    data.NewDeath.push(day.deathIncrease);
-
-    // Вычисления выздоровевших в день
-    if (index === 0) {
-      data.NewRecovered.push(day.recovered);
-      data.NewRecoveredPOHT.push(POHT(population, day.recovered));
-    } else {
-      data.NewRecovered.push(day.recovered - worldCases[index - 1].recovered);
-      data.NewRecoveredPOHT.push(POHT(population, day.recovered - worldCases[index - 1].recovered));
-    }
-
-    // Данные за все время
-    data.Confirmed.push(day.positive);
-    data.Death.push(day.death);
-    data.Recovered.push(day.recovered);
-
-    // Данные за сегодня на 100к населения
-    data.NewConfirmedPOHT.push(POHT(population, day.positiveIncrease));
-    data.NewDeathPOHT.push(POHT(population, day.deathIncrease));
-
-    // Данные за все время на 100к населения
-    data.ConfirmedPOHT.push(POHT(population, day.positive));
-    data.DeathPOHT.push(POHT(population, day.death));
-    data.RecoveredPOHT.push(POHT(population, day.recovered));
-
-    // Даты
-    data.worldCasesDate.push(day.dateChecked.slice(0, 10));
-  });
+  data.confirmedPOHT = data.confirmed.map(e => POHT(population, e));
+  data.deathPOHT = data.death.map(e => POHT(population, e));
+  data.recoveredPOHT = data.recovered.map(e => POHT(population, e));
   return data;
 }
 
 function createDataByCountryForChart(countryData, population) {
+  console.log(countryData);
   const data = {};
   data.label = countryData[0].Country;
   data.dates = [];
