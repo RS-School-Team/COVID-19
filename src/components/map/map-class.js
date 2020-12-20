@@ -28,12 +28,9 @@ class Map extends Component {
   }
 
   redrowMap(parameters) {
-    const gettedParameters = [...parameters];
-    this.state.sortTypes = [['confirmed', 'Number of cases']];
-    const [index = 0] = gettedParameters;
-    let [sortType, sortName] = this.state.sortTypes[index];
-    if (!sortName) sortName = 'Number of cases';
-    if (!sortType) sortType = 'totalConfirmed';
+    let index = this.state.data.sortTypes.findIndex(e => e[0] === parameters.toString());
+    if (index === -1) index = 0;
+    const [sortType, sortName] = this.state.data.sortTypes[index];
     this.map.setOnLoadCallback(this.drawRegionsMap.bind(this, sortType, sortName));
   }
 
