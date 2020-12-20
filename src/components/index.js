@@ -1,5 +1,5 @@
 import GetData from './getData';
-// import Map from './map';
+import Map from './map';
 import InitialLayout from './layout';
 import GlobalCasesTable from './globalTable';
 import CountryCasesTable from './countryCasesTable';
@@ -11,7 +11,7 @@ class Components {
     this.layout = new InitialLayout();
     this.globalCasesTable = new GlobalCasesTable();
     this.CountryCasesTable = new CountryCasesTable();
-    // this.map = new Map();
+    this.map = new Map();
     this.graph = new Graph();
   }
 }
