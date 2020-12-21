@@ -87,4 +87,9 @@ const findTarget = (target, lookingAction) => {
 
 const qs = (selector, scope) => (scope || document).querySelector(selector);
 
-export { create, simpleTag, importAll, findTarget, shuffle, qs };
+const fullScreenSwitcher = name => {
+  const container = qs(`.${name}__container`);
+  container.classList.toggle('full-screen');
+};
+
+export { create, simpleTag, importAll, findTarget, shuffle, qs, fullScreenSwitcher };

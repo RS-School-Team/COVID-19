@@ -40,7 +40,7 @@ class Graph extends Component {
   changeDataType(arg) {
     [this.dataPath] = this.options.data.datasets;
     if (typeof arg[0] === 'string') {
-      this.ind = this.state.data.sortTypes.findIndex(e => e[0] === arg.toString());
+      [this.ind] = arg;
       if (this.ind < 6) {
         this.options.type = 'line';
         this.dataPath.fill = false;
