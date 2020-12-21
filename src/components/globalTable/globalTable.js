@@ -32,6 +32,7 @@ export default class GlobalCasesTable extends Component {
   render() {
     this.events.addEventList('sortChanged', [this.sort.bind(this)]);
     this.events.addEventList('startSearch', [this.search.bind(this)]);
+    this.events.addEventList('countryChoosed', [this.valueChange.bind(this)]);
   }
 
   sort(name) {
@@ -64,6 +65,7 @@ export default class GlobalCasesTable extends Component {
     this.tableList.innerHTML = '';
     this.tableList.append(...this.buttonsList);
     this.tableNav.value = sortType;
+    this.search(this.input.value);
   }
 
   createTableNav() {
@@ -80,7 +82,7 @@ export default class GlobalCasesTable extends Component {
   }
 
   search(value) {
-    const searchVal = new RegExp(value, 'i');
+    const searchVal = new RegExp(value.toString().trim(), 'i');
     this.buttonsList.forEach(button => {
       if (!button.textContent.match(searchVal)) {
         // eslint-disable-next-line no-param-reassign
@@ -90,5 +92,10 @@ export default class GlobalCasesTable extends Component {
         button.style.display = '';
       }
     });
+  }
+
+  valueChange(index) {
+    this.input.value = this.state.countriesList[index].name;
+    this.search(this.input.value);
   }
 }

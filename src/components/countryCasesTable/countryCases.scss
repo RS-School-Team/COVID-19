@@ -1,4 +1,5 @@
 .country-cases{
+    border: #dee2e6 #dee2e6 #fff;
     position: relative;
     text-align: center;
         min-width: 245px;
@@ -6,16 +7,49 @@
         width: 100%;
     
         .country-cases__header{
-            width: 100%;
+            flex: 0 0 50%;
             padding: 5px;
             display: flex;
             gap: 7px;
             justify-content: center;
+            align-items: center;
             h6{
                 text-align: center;
+                font-size: 1.2em;
+                font-weight: 700;
+                letter-spacing: 0.06em;
             }
         }
-        .country-cases__flag{
-            width: 40px;
+
+        .cases__table__count{
+            font-weight: 600;
+            letter-spacing: 0.07em;
         }
+        .country-cases__flag{
+            width: 99px;
+            height: 66px;
+            border: 1px solid #dee2e6;
+        }
+
+        .cases_amount{
+            flex: 0 0 50%;
+        }
+        
+
+        .death{
+            color: red;
+        }
+        .recovered{
+            color: green;
+        }
+}
+.nav-tabs {
+    font-size: 0.8em;
+    cursor: pointer;
+    border-bottom: none;
+    & .nav-link{
+        padding: 0 0.5rem;
+        border-bottom: none;
+        padding-bottom: 3px;
+    }
 }
