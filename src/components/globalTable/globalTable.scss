@@ -11,26 +11,6 @@
     }
 }
 
-.nav-tabs {
-    font-size: 0.8em;
-    cursor: pointer;
-    border-bottom: none;
-    & .nav-link{
-        padding: 0 0.5rem;
-        border-bottom: none;
-        padding-bottom: 3px;
-        &.active{
-            background: rgba(255, 255, 255, 0.1);
-            border-color:rgba(255, 255, 255, 0.1);
-            border-bottom: none;
-        }
-    
-    }
-}
-
-.chart__container{
-    height: 40vh;
-}
 .col-3{
     height: 100vh;
     display: flex;
