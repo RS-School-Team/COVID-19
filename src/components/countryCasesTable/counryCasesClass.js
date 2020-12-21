@@ -4,49 +4,53 @@ import Component from '../component';
 export default class CountryCasesTable extends Component {
   constructor() {
     super();
-    this.isAllTime = true;
-    this.isAllCases = true;
+    this.allCases = true;
   }
 
   init() {
     this.flag = helper.create('img', 'country-cases__flag');
     this.flag.style.display = 'none';
     this.countryName = helper.create('h6', null, 'Global');
-    this.allTimeTab = helper.create(
-      'li',
-      'nav-link active',
-      'All Time',
-      null,
-      ['click', 'sortChanged'],
-      ['name', 'confirmed']
-    );
-    this.lastDayTab = helper.create(
-      'li',
-      'nav-link',
-      'Last Day',
-      null,
-      ['click', 'sortChanged'],
-      ['name', 'newConfirmed']
-    );
-    this.allCasesTab = helper.create(
-      'li',
-      'nav-link active',
-      'All Cases',
-      null,
-      ['click', 'sortChanged'],
-      ['name', 'confirmed']
-    );
-    this.casesPOHTTab = helper.create(
-      'li',
-      'nav-link',
-      'Per 100,000 Population',
-      null,
-      ['click', 'sortChanged'],
-      ['name', 'confirmedPOHT']
-    );
+    this.tabArr = [
+      helper.create(
+        'li',
+        'nav-link active',
+        'All Cases',
+        null,
+        ['click', 'sortChanged'],
+        ['name', 'confirmed'],
+        ['linked', 'confirmed death recovered']
+      ),
+      helper.create(
+        'li',
+        'nav-link',
+        'Last Day Cases',
+        null,
+        ['click', 'sortChanged'],
+        ['name', 'newConfirmed'],
+        ['linked', 'newConfirmed newDeath newRecovered']
+      ),
+      helper.create(
+        'li',
+        'nav-link',
+        'All Cases Per 100,000 Population',
+        null,
+        ['click', 'sortChanged'],
+        ['name', 'confirmedPOHT'],
+        ['linked', 'confirmedPOHT deathPOHT recoveredPOHT']
+      ),
+      helper.create(
+        'li',
+        'nav-link',
+        'Last Day Cases Per 100,000 Population',
+        null,
+        ['click', 'sortChanged'],
+        ['name', 'newConfirmedPOHT'],
+        ['linked', 'newConfirmedPOHT newDeathPOHT newRecoveredPOHT']
+      ),
+    ];
     this.casesContainer = helper.create('div', 'country-cases', [
-      helper.create('ul', 'nav nav-tabs', [this.allTimeTab, this.lastDayTab]),
-      helper.create('ul', 'nav nav-tabs', [this.allCasesTab, this.casesPOHTTab]),
+      helper.create('ul', 'nav nav-tabs', [...this.tabArr]),
       helper.create('div', 'cases__table py-3 border d-flex justify-around', [
         helper.create('div', 'country-cases__header', [this.flag, this.countryName]),
       ]),
@@ -112,55 +116,16 @@ export default class CountryCasesTable extends Component {
       this.country = this.state.worldData;
       this.countryName.innerText = 'Global';
     }
-    console.log(this.country);
-    if (sortType.toString().match('new')) {
-      this.isAllTime = false;
-      if (sortType.toString().match('POHT')) {
-        this.isAllCases = false;
-      } else {
-        this.isAllCases = true;
-      }
-    } else {
-      this.isAllTime = true;
-      if (sortType.toString().match('POHT')) {
-        this.isAllCases = false;
-      } else {
-        this.isAllCases = true;
-      }
-    }
-    if (this.isAllTime) {
-      this.allTimeTab.classList.add('active');
-      this.lastDayTab.classList.remove('active');
-      if (this.isAllCases) {
-        this.allCasesTab.classList.add('active');
-        this.casesPOHTTab.classList.remove('active');
-        this.cases.innerText = this.country.confirmed;
-        this.death.innerText = this.country.death;
-        this.recovered.innerText = this.country.recovered;
-      } else {
-        this.allCasesTab.classList.remove('active');
-        this.casesPOHTTab.classList.add('active');
-        this.cases.innerText = this.country.confirmedPOHT;
-        this.death.innerText = this.country.deathPOHT;
-        this.recovered.innerText = this.country.recoveredPOHT;
-      }
-    } else {
-      this.lastDayTab.classList.add('active');
-      this.allTimeTab.classList.remove('active');
-      if (this.isAllCases) {
-        this.allCasesTab.classList.add('active');
-        this.casesPOHTTab.classList.remove('active');
-        this.cases.innerText = this.country.newConfirmed;
-        this.death.innerText = this.country.newDeath;
-        this.recovered.innerText = this.country.newRecovered;
-      } else {
-        this.allCasesTab.classList.remove('active');
-        this.casesPOHTTab.classList.add('active');
-        this.cases.innerText = this.country.newConfirmedPOHT;
-        this.death.innerText = this.country.newDeathPOHT;
-        this.recovered.innerText = this.country.newRecoveredPOHT;
-      }
-    }
-    console.log(this.isAllTime, this.isAllCases);
+    const sort = sortType.toString();
+    const pref = sort.match('new') ? 'new' : '';
+    const suff = sort.match('POHT') ? 'POHT' : '';
+    this.tabArr.map(elem =>
+      elem.dataset.linked.split(' ').includes(sort)
+        ? elem.classList.add('active')
+        : elem.classList.remove('active')
+    );
+    this.cases.innerText = this.country[sort];
+    this.death.innerText = this.country[`${pref}${pref ? 'D' : 'd'}eath${suff}`];
+    this.recovered.innerText = this.country[`${pref}${pref ? 'R' : 'r'}ecovered${suff}`];
   }
 }
