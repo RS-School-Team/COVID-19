@@ -1,5 +1,6 @@
 import * as helper from '../../helper';
 import Component from '../component';
+import Button from '../../elements';
 
 export default class CountryCasesTable extends Component {
   constructor() {
@@ -11,47 +12,35 @@ export default class CountryCasesTable extends Component {
     this.flag = helper.create('img', 'country-cases__flag');
     this.flag.style.display = 'none';
     this.countryName = helper.create('h6', null, 'Global');
-    this.tabArr = [
-      helper.create(
-        'li',
-        'nav-link active',
-        'All Cases',
-        null,
-        ['click', 'sortChanged'],
-        ['name', 'confirmed'],
-        ['linked', 'confirmed death recovered']
-      ),
-      helper.create(
-        'li',
-        'nav-link',
-        'Last Day Cases',
-        null,
-        ['click', 'sortChanged'],
-        ['name', 'newConfirmed'],
-        ['linked', 'newConfirmed newDeath newRecovered']
-      ),
-      helper.create(
-        'li',
-        'nav-link',
-        'All Cases Per 100,000 Population',
-        null,
-        ['click', 'sortChanged'],
-        ['name', 'confirmedPOHT'],
-        ['linked', 'confirmedPOHT deathPOHT recoveredPOHT']
-      ),
-      helper.create(
-        'li',
-        'nav-link',
-        'Last Day Cases Per 100,000 Population',
-        null,
-        ['click', 'sortChanged'],
-        ['name', 'newConfirmedPOHT'],
-        ['linked', 'newConfirmedPOHT newDeathPOHT newRecoveredPOHT']
-      ),
+    const datasetArray = [
+      [0, 'confirmed death recovered'],
+      [3, 'confirmedPOHT deathPOHT recoveredPOHT'],
+      [6, 'newConfirmed newDeath newRecovered'],
+      [9, 'newConfirmedPOHT newDeathPOHT newRecoveredPOHT'],
     ];
-    this.casesContainer = helper.create('div', 'country-cases', [
+    this.tabArr = datasetArray.map(elem => {
+      const [name, linked] = elem;
+      const [, tabHeader] = this.state.data.sortTypes[name];
+      return helper.create(
+        'li',
+        'nav-link',
+        tabHeader.replace('Confirmed', 'Cases'),
+        null,
+        ['click', 'sortChanged'],
+        ['name', name],
+        ['linked', linked]
+      );
+    });
+    const fullScreenButton = new Button(
+      'country-cases',
+      'fullScreen',
+      'btn full-screen__button',
+      'X'
+    );
+    this.casesContainer = helper.create('div', 'country-cases__container', [
       helper.create('ul', 'nav nav-tabs', [...this.tabArr]),
-      helper.create('div', 'cases__table py-3 border d-flex justify-around', [
+      fullScreenButton.tag,
+      helper.create('div', 'cases__table py-3 border border-dark d-flex justify-around', [
         helper.create('div', 'country-cases__header', [this.flag, this.countryName]),
       ]),
     ]);
@@ -102,21 +91,32 @@ export default class CountryCasesTable extends Component {
     ]);
     casesAmount.append(this.casesContainer, this.deathContainer, this.recoveredContainer);
     this.container.append(casesAmount);
+    this.changeStats([]);
   }
 
-  showStats(index) {
-    this.country = this.state.countriesList[index];
-    this.flag.src = this.country.flag;
-    this.flag.style.display = '';
-    this.countryName.innerText = this.country.name;
-  }
-
-  changeStats(sortType) {
-    if (!this.country) {
+  showStats(indexArray) {
+    const [index] = indexArray;
+    if (!index) {
       this.country = this.state.worldData;
       this.countryName.innerText = 'Global';
+      this.flag.style.display = 'none';
+    } else {
+      this.country = this.state.countriesList[index];
+      this.flag.src = this.country.flag;
+      this.flag.style.display = '';
+      this.countryName.innerText = this.country.name;
     }
-    const sort = sortType.toString();
+  }
+
+  changeStats(indexArray) {
+    let [index] = indexArray;
+    if (!index) {
+      index = 0;
+    }
+    if (!this.country) {
+      this.country = this.state.worldData;
+    }
+    const [sort] = this.state.data.sortTypes[index];
     const pref = sort.match('new') ? 'new' : '';
     const suff = sort.match('POHT') ? 'POHT' : '';
     this.tabArr.map(elem =>

@@ -1,5 +1,6 @@
 import * as helper from '../../helper';
 import Component from '../component';
+import Button from '../../elements';
 
 export default class GlobalCasesTable extends Component {
   init() {
@@ -7,19 +8,42 @@ export default class GlobalCasesTable extends Component {
     this.createTableNav();
     this.input = helper.create(
       'input',
-      'input-group input-group-lg my-1 form-control',
+      'form-control',
       null,
       this.tableContainer,
       ['type', 'text'],
-      ['placeholder', 'Country'],
+      ['placeholder', 'Search Country'],
       ['input', 'startSearch']
     );
+    this.inputGroup = helper.create('div', 'input-group my-1', [
+      this.input,
+      helper.create(
+        'div',
+        'input-group-append',
+        helper.create(
+          'button',
+          'btn btn-outline-secondary',
+          'Reset',
+          null,
+          ['type', 'button'],
+          ['click', 'countryChoosed'],
+          ['alt', 'Reset'],
+          ['name', '']
+        )
+      ),
+    ]);
+
     this.tableList = helper.create('div', 'list-group list-group-flush global-cases__table');
-    this.tableContainer = helper.create('div', 'country-table border border-dark pt-2 mb-2');
+    const fullScreenBtn = new Button('country-table', 'fullScreen', 'btn full-screen__button', 'X');
+    this.tableContainer = helper.create(
+      'div',
+      'country-table__container border border-dark pt-2 mb-2',
+      fullScreenBtn.tag
+    );
     this.tableContainer.append(
       helper.create('h6', 'text-center', 'Cases by country'),
       this.tableNav,
-      this.input,
+      this.inputGroup,
       this.tableList
     );
     document
@@ -35,11 +59,13 @@ export default class GlobalCasesTable extends Component {
     this.events.addEventList('countryChoosed', [this.valueChange.bind(this)]);
   }
 
-  sort(name) {
-    let [sortType] = name;
-    if (!sortType) {
-      sortType = 'confirmed';
+  sort(indexArray) {
+    let [index] = indexArray;
+    if (!index) {
+      index = 0;
     }
+    this.tableNav[index].selected = true;
+    const [sortType] = this.state.data.sortTypes[index];
     this.dataList = Array.from(this.state.countriesList).sort((a, b) => b[sortType] - a[sortType]);
     this.tableList = document.querySelector('.global-cases__table');
     this.buttonsList = this.dataList.map(country => {
@@ -64,19 +90,18 @@ export default class GlobalCasesTable extends Component {
     });
     this.tableList.innerHTML = '';
     this.tableList.append(...this.buttonsList);
-    this.tableNav.value = sortType;
     this.search(this.input.value);
   }
 
   createTableNav() {
-    this.state.data.sortTypes.map(elem =>
+    this.state.data.sortTypes.map((elem, index) =>
       helper.create(
         'option',
         'dropdown-item',
         elem[1],
         this.tableNav,
         ['name', elem[0]],
-        ['value', elem[0]]
+        ['value', index]
       )
     );
   }
@@ -85,17 +110,21 @@ export default class GlobalCasesTable extends Component {
     const searchVal = new RegExp(value.toString().trim(), 'i');
     this.buttonsList.forEach(button => {
       if (!button.textContent.match(searchVal)) {
-        // eslint-disable-next-line no-param-reassign
-        button.style.display = 'none';
+        button.classList.add('hidden');
       } else {
-        // eslint-disable-next-line no-param-reassign
-        button.style.display = '';
+        button.classList.remove('hidden');
       }
     });
   }
 
-  valueChange(index) {
-    this.input.value = this.state.countriesList[index].name;
-    this.search(this.input.value);
+  valueChange(indexArray) {
+    const [index] = indexArray;
+    if (!index) {
+      this.input.value = '';
+      this.events.dispatchEvent('sortChanged');
+    } else {
+      this.input.value = this.state.countriesList[index].name;
+      this.search(this.input.value);
+    }
   }
 }
