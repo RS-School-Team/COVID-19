@@ -12,7 +12,6 @@ export default class CountryCasesTable extends Component {
   }
 
   initTable() {
-    console.log('start');
     this.mapCasesContainer = document.querySelector('.map-cases__container');
     this.flag = helper.create('img', 'country-cases__flag');
     this.flag.style.display = 'none';
