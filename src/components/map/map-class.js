@@ -25,6 +25,7 @@ class Map extends Component {
     this.events.addEventList('mapClicked', [this.countryClicked.bind(this)]);
     this.events.addEventList('sortChanged', [this.redrowMap.bind(this)]);
     this.events.addEventList('dataByCountryGot', [this.redrowMap.bind(this)]);
+    this.events.addEventList('countryChoosed', [this.countryChoosed.bind(this)]);
   }
 
   redrowMap(parameters) {
@@ -36,22 +37,30 @@ class Map extends Component {
 
   drawRegionsMap(sortType, sortName) {
     const cases = [];
-    this.state.countriesList.forEach(country => {
-      const { countryCode, name } = country;
-      const information = country[sortType];
-      cases.push([countryCode, name, information]);
-    });
-    const data = this.map.visualization.arrayToDataTable([
-      ['Country', 'Country Name', sortName],
-      ...cases,
-    ]);
-    const options = {
-      colorAxis: { colors: ['#3498db', '#ff7675', '#ff6b81', '#c0392b'] },
-    };
+    const { countriesList } = this.state;
+    if (countriesList) {
+      this.state.countriesList.forEach(country => {
+        const { countryCode, name } = country;
+        const information = country[sortType];
+        cases.push([countryCode, name, information]);
+      });
+      const data = this.map.visualization.arrayToDataTable([
+        ['Country', 'Country Name', sortName],
+        ...cases,
+      ]);
+      const options = {
+        colorAxis: { colors: ['#3498db', '#ff7675', '#ff6b81', '#c0392b'] },
+      };
 
-    this.charty = new this.map.visualization.GeoChart(this.tag);
+      this.charty = new this.map.visualization.GeoChart(this.tag);
 
-    this.charty.draw(data, options);
+      this.charty.draw(data, options);
+    }
+  }
+
+  countryChoosed(rowArray) {
+    const [row] = rowArray;
+    this.charty.setSelection([{ row }]);
   }
 
   countryClicked() {
