@@ -38,7 +38,7 @@ class Graph extends Component {
   }
 
   changeDataType(arg) {
-    if (typeof this.ind === 'string') {
+    if (typeof arg[0] === 'string') {
       [this.ind] = arg;
       if (this.ind < 6) {
         this.options.type = 'line';
