@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 // PerOneHundredThousands === POHT
 
@@ -92,7 +91,7 @@ function getWorldDataForChart(worldCases) {
   const dates = Object.keys(worldCases.cases);
   const population = 7850000000;
   const data = {};
-  data.worldCasesDate = dates;
+  data.dates = dates;
 
   data.newConfirmed = getNewCases(cases);
   data.newDeath = getNewCases(deaths);
@@ -113,7 +112,6 @@ function getWorldDataForChart(worldCases) {
 }
 
 function createDataByCountryForChart(countryData, population) {
-  console.log(countryData);
   const data = {};
   data.label = countryData[0].Country;
   data.dates = [];

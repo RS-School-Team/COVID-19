@@ -76,24 +76,27 @@ export default class GetData extends Component {
     }
   }
 
-  async getDataByCountry(index) {
-    this.currentCountry = this.state.countriesList[index].slug;
-    try {
-      this.currentCountryData = await (
-        await fetch(`https://api.covid19api.com/total/country/${this.currentCountry}`)
-      ).json();
-    } catch (e) {
-      this.currentCountryData = await extraFetch(
-        `http://api.covid19api.com/total/country/${this.currentCountry}`
-      );
+  async getDataByCountry(indexArr) {
+    const [index] = indexArr;
+    if (index) {
+      this.currentCountry = this.state.countriesList[index].slug;
+      try {
+        this.currentCountryData = await (
+          await fetch(`https://api.covid19api.com/total/country/${this.currentCountry}`)
+        ).json();
+      } catch (e) {
+        this.currentCountryData = await extraFetch(
+          `http://api.covid19api.com/total/country/${this.currentCountry}`
+        );
+      }
+      if (this.currentCountryData) {
+        this.state.countryData = createDataByCountryForChart(
+          this.currentCountryData,
+          this.state.countriesList[index].population
+        );
+      }
+      this.events.dispatchEvent('dataCountryGot');
     }
-    if (this.currentCountryData) {
-      this.state.countryData = createDataByCountryForChart(
-        this.currentCountryData,
-        this.state.countriesList[index].population
-      );
-    }
-    this.events.dispatchEvent('dataCountryGot');
   }
 }
 
