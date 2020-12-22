@@ -1,5 +1,5 @@
 import charts from 'map';
-import { simpleTag } from '../../helper';
+import { create } from '../../helper';
 import Component from '../component';
 import './map-style.scss';
 
@@ -14,14 +14,14 @@ class Map extends Component {
     this.map.charts.load('current', {
       packages: ['geochart'],
     });
-    this.tag = simpleTag({
-      classTag: 'app-map embed-responsive',
-      advanced: {
-        'data-click': 'mapClicked',
-        'data-name': 'map',
-      },
-    });
-    this.container.appendChild(this.tag);
+    this.tag = create(
+      'div',
+      'app-map embed-responsive col-lg-11 col-xl-11',
+      null,
+      this.container,
+      ['click', 'mapClicked'],
+      ['name', 'map']
+    );
     this.events.addEventList('mapClicked', [this.countryClicked.bind(this)]);
     this.events.addEventList('sortChanged', [this.sortChanged.bind(this)]);
     this.events.addEventList('dataByCountryGot', [this.firstStart.bind(this)]);

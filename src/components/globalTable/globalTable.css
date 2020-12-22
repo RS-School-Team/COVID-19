@@ -1,38 +1,3 @@
-.global-cases {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  padding: 10px;
-  text-align: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  min-height: 13vh;
-}
-
-.global-cases .count-global-cases {
-  color: red;
-  font-weight: 700;
-}
-
-.col-3 {
-  height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
 .country-table__container {
   background: rgba(0, 0, 0, 0.07);
   position: relative;
@@ -53,11 +18,15 @@
 }
 
 .list-group-item-action {
+  font-size: 0.85em;
   background: rgba(255, 255, 255, 0);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   gap: 7px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .list-group-item-action img {
@@ -78,5 +47,10 @@
 .list-group-item-action .active {
   color: active;
   background: rgba(255, 255, 255, 0.3);
+}
+
+.country-count {
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 /*# sourceMappingURL=globalTable.css.map */

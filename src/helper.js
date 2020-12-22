@@ -46,25 +46,6 @@ const create = (el, classNames, child, parent, ...dataAttr) => {
   }
   return element;
 };
-const simpleTag = (elementInfo = {}, dynamicData) => {
-  const { tagName = 'div', classTag = 'block', content, advanced } = elementInfo;
-  const tag = document.createElement(tagName);
-  const advancedProperties = ([name, value]) => {
-    tag.setAttribute(name, value);
-  };
-
-  tag.className = classTag;
-  if (advanced) {
-    Object.entries(advanced).forEach(advancedProperties);
-  }
-  if (content) {
-    tag.innerHTML = content;
-  }
-  if (dynamicData) {
-    tag.innerHTML = dynamicData;
-  }
-  return tag;
-};
 
 const importAll = r => {
   return r.keys().map(r);
@@ -92,4 +73,4 @@ const fullScreenSwitcher = name => {
   container.classList.toggle('full-screen');
 };
 
-export { create, simpleTag, importAll, findTarget, shuffle, qs, fullScreenSwitcher };
+export { create, importAll, findTarget, shuffle, qs, fullScreenSwitcher };

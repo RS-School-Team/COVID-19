@@ -10,7 +10,7 @@ export default class CountryCasesTable extends Component {
 
   init() {
     this.flag = helper.create('img', 'country-cases__flag');
-    this.flag.style.display = 'none';
+    this.flag.classList.add('hidden');
     this.countryName = helper.create('h6', null, 'Global');
     const datasetArray = [
       [0, 'confirmed death recovered'],
@@ -24,25 +24,24 @@ export default class CountryCasesTable extends Component {
       return helper.create(
         'li',
         'nav-link',
-        tabHeader.replace('Confirmed', 'Cases'),
+        tabHeader.replace('Confirmed', '').replace('Population', ''),
         null,
         ['click', 'sortChanged'],
         ['name', name],
         ['linked', linked]
       );
     });
-    const fullScreenButton = new Button(
-      'country-cases',
-      'fullScreen',
-      'btn full-screen__button',
-      'X'
-    );
+    const fullScreenButton = new Button('country-cases', 'fullScreen', 'btn full-screen__button');
+    fullScreenButton.setIcon(this.state.image[0]);
+    this.date = helper.create('h5', 'data-date');
     this.casesContainer = helper.create('div', 'country-cases__container', [
       helper.create('ul', 'nav nav-tabs', [...this.tabArr]),
       fullScreenButton.tag,
-      helper.create('div', 'cases__table py-3 border border-dark d-flex justify-around', [
-        helper.create('div', 'country-cases__header', [this.flag, this.countryName]),
-      ]),
+      helper.create(
+        'div',
+        'cases__table py-3 border border-dark d-flex flex-column flex-lg-row justify-around',
+        [helper.create('div', 'country-cases__header', [this.date, this.flag, this.countryName])]
+      ),
     ]);
     this.events.addEventList('dataByCountryGot', [this.render.bind(this)]);
     this.events.addEventList('countryChoosed', [this.showStats.bind(this)]);
@@ -58,9 +57,9 @@ export default class CountryCasesTable extends Component {
     this.mapCasesContainer.append(this.casesContainer);
     this.container = document.querySelector('.cases__table');
     this.dataList = Array.from(this.state.countriesList);
-    const globalCases = this.dataList.reduce((acc, country) => acc + country.confirmed, 0);
-    const globalDeath = this.dataList.reduce((acc, country) => acc + country.death, 0);
-    const globalRecovered = this.dataList.reduce((acc, country) => acc + country.recovered, 0);
+    const globalCases = this.state.worldData.confirmed;
+    const globalDeath = this.state.worldData.death;
+    const globalRecovered = this.state.worldData.recovered;
     const casesAmount = helper.create('div', 'cases__amount');
     this.cases = helper.create(
       'span',
@@ -89,6 +88,9 @@ export default class CountryCasesTable extends Component {
       helper.create('span', 'cases__table__header recovered', 'Recovered: '),
       this.recovered,
     ]);
+    const dataArr = this.state.worldData.chartData.dates;
+    const dateInner = new Date(dataArr[dataArr.length - 1]);
+    this.date.innerText = `${dateInner.toLocaleDateString()}`;
     casesAmount.append(this.casesContainer, this.deathContainer, this.recoveredContainer);
     this.container.append(casesAmount);
     this.changeStats([]);
@@ -99,11 +101,11 @@ export default class CountryCasesTable extends Component {
     if (!index) {
       this.country = this.state.worldData;
       this.countryName.innerText = 'Global';
-      this.flag.style.display = 'none';
+      this.flag.classList.add('hidden');
     } else {
       this.country = this.state.countriesList[index];
       this.flag.src = this.country.flag;
-      this.flag.style.display = '';
+      this.flag.classList.remove('hidden');
       this.countryName.innerText = this.country.name;
     }
   }

@@ -34,14 +34,15 @@ export default class GlobalCasesTable extends Component {
     ]);
 
     this.tableList = helper.create('div', 'list-group list-group-flush global-cases__table');
-    const fullScreenBtn = new Button('country-table', 'fullScreen', 'btn full-screen__button', 'X');
+    const fullScreenBtn = new Button('country-table', 'fullScreen', 'btn full-screen__button');
+    fullScreenBtn.setIcon(this.state.image[0]);
     this.tableContainer = helper.create(
       'div',
       'country-table__container border border-dark pt-2 mb-2',
       fullScreenBtn.tag
     );
     this.tableContainer.append(
-      helper.create('h6', 'text-center', 'Cases by country'),
+      helper.create('h6', 'text-center', 'Cases by countries'),
       this.tableNav,
       this.inputGroup,
       this.tableList
@@ -70,10 +71,10 @@ export default class GlobalCasesTable extends Component {
     this.tableList = document.querySelector('.global-cases__table');
     this.buttonsList = this.dataList.map(country => {
       const img = helper.create('img', 'flag border img-fluid', null, null, ['src', country.flag]);
-      const cases = helper.create('span', 'country-count mx-3', country[sortType].toString());
-      if (sortType.includes('Death')) {
+      const cases = helper.create('span', 'country-count mx-1', country[sortType].toString());
+      if (sortType.includes('eath')) {
         cases.style.color = 'red';
-      } else if (sortType.includes('Recovered')) {
+      } else if (sortType.includes('ecovered')) {
         cases.style.color = 'green';
       } else {
         cases.style.color = 'black';
