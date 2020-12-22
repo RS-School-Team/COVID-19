@@ -40,6 +40,9 @@ class App extends Component {
         this.events.dispatchEvent(action.toString(), name.toString());
       }
     });
+    window.onresize = () => {
+      this.events.dispatchEvent('windowResized');
+    };
   }
 }
 
