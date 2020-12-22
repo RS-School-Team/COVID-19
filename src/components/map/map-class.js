@@ -16,7 +16,7 @@ class Map extends Component {
     });
     this.tag = create(
       'div',
-      'app-map embed-responsive col-lg-11 col-xl-11',
+      'app-map embed-responsive col-lg-10 col-xl-10',
       null,
       this.container,
       ['click', 'mapClicked'],
