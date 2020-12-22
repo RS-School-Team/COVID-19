@@ -48,8 +48,9 @@ class Graph extends Component {
         this.dataPath.fill = true;
       }
       this.cartNav[this.ind].selected = true;
-      const [, label] = this.state.data.sortTypes[this.ind];
+      const [data, label] = this.state.data.sortTypes[this.ind];
       this.dataPath.label = label;
+      this.dataPath.data = this.path[data];
       this.chart.update();
     } else {
       this.cartNav[0].selected = true;
@@ -57,7 +58,6 @@ class Graph extends Component {
   }
 
   countyChange() {
-    // if (!this.ind) this.ind = 0;
     this.path = this.state.countryData;
     this.title.innerText = this.path.label;
     const [data] = this.state.data.sortTypes[this.ind];
