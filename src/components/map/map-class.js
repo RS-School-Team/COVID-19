@@ -26,6 +26,7 @@ class Map extends Component {
     this.events.addEventList('sortChanged', [this.sortChanged.bind(this)]);
     this.events.addEventList('dataByCountryGot', [this.firstStart.bind(this)]);
     this.events.addEventList('countryChoosed', [this.countryChoosed.bind(this)]);
+    this.events.addEventList('windowResized', [this.drawMap.bind(this)]);
   }
 
   firstStart() {
@@ -106,7 +107,6 @@ class Map extends Component {
     this.setRegion(row);
     this.setData();
     this.drawMap();
-    this.charty.setSelection([{ row }]);
   }
 
   countryClicked() {
@@ -114,6 +114,8 @@ class Map extends Component {
     if (result) {
       const { row } = result;
       this.events.dispatchEvent('countryChoosed', row);
+    } else {
+      this.events.dispatchEvent('countryChoosed');
     }
   }
 }
