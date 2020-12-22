@@ -34,7 +34,11 @@ export default class GlobalCasesTable extends Component {
     ]);
 
     this.tableList = helper.create('div', 'list-group list-group-flush global-cases__table');
-    const fullScreenBtn = new Button('country-table', 'fullScreen', 'btn full-screen__button');
+    const fullScreenBtn = new Button(
+      'country-table',
+      'fullScreen',
+      'btn btn-outline-secondary full-screen__button'
+    );
     fullScreenBtn.setIcon(this.state.image[0]);
     this.tableContainer = helper.create(
       'div',
