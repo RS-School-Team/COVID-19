@@ -23,43 +23,89 @@ class Map extends Component {
     });
     this.container.appendChild(this.tag);
     this.events.addEventList('mapClicked', [this.countryClicked.bind(this)]);
-    this.events.addEventList('sortChanged', [this.redrowMap.bind(this)]);
-    this.events.addEventList('dataByCountryGot', [this.redrowMap.bind(this)]);
+    this.events.addEventList('sortChanged', [this.sortChanged.bind(this)]);
+    this.events.addEventList('dataByCountryGot', [this.firstStart.bind(this)]);
     this.events.addEventList('countryChoosed', [this.countryChoosed.bind(this)]);
   }
 
-  redrowMap(parameters) {
-    let index = this.state.data.sortTypes.findIndex(e => e[0] === parameters.toString());
-    if (index === -1) index = 0;
-    const [sortType, sortName] = this.state.data.sortTypes[index];
-    this.map.setOnLoadCallback(this.drawRegionsMap.bind(this, sortType, sortName));
+  firstStart() {
+    this.setOptions();
+    this.setSortType();
+    this.setRegion();
+    this.setDataArray();
+    this.map.setOnLoadCallback(this.drawRegionsMap.bind(this));
   }
 
-  drawRegionsMap(sortType, sortName) {
-    const cases = [];
-    const { countriesList } = this.state;
-    if (countriesList) {
-      this.state.countriesList.forEach(country => {
-        const { countryCode, name } = country;
-        const information = country[sortType];
-        cases.push([countryCode, name, information]);
-      });
-      const data = this.map.visualization.arrayToDataTable([
-        ['Country', 'Country Name', sortName],
-        ...cases,
-      ]);
-      const options = {
-        colorAxis: { colors: ['#3498db', '#ff7675', '#ff6b81', '#c0392b'] },
-      };
-
-      this.charty = new this.map.visualization.GeoChart(this.tag);
-
-      this.charty.draw(data, options);
+  setSortType(index) {
+    const [firstSortType] = this.state.data.sortTypes;
+    let [sortType, sortName] = firstSortType;
+    if (index) {
+      const [sortTypeByIndex, sortNameByIndex] = this.state.data.sortTypes[index];
+      sortType = sortTypeByIndex;
+      sortName = sortNameByIndex;
     }
+    this.sortType = sortType;
+    this.sortName = sortName;
+  }
+
+  setOptions() {
+    this.options = {
+      colorAxis: { colors: ['#3498db', '#ff7675', '#ff6b81', '#c0392b'] },
+    };
+  }
+
+  setRegion(index) {
+    this.options.region = 'world';
+    if (index) {
+      const { countryCode } = this.state.countriesList[index];
+      this.options.region = countryCode;
+    }
+  }
+
+  setDataArray() {
+    const { countriesList } = this.state;
+    this.dataArray = countriesList.map(country => {
+      const { countryCode, name } = country;
+      const information = country[this.sortType];
+      return [countryCode, name, information];
+    });
+  }
+
+  drawRegionsMap() {
+    this.setOptions();
+    this.setData();
+    this.charty = new this.map.visualization.GeoChart(this.tag);
+    this.drawMap();
+  }
+
+  setData() {
+    this.data = this.map.visualization.arrayToDataTable([
+      ['Country', 'Country Name', this.sortName],
+      ...this.dataArray,
+    ]);
+  }
+
+  drawMap() {
+    this.charty.draw(this.data, this.options);
+  }
+
+  sortChanged(parameters) {
+    let index = 0;
+    if (parameters) {
+      const [indexFromParameters] = parameters;
+      if (indexFromParameters) index = indexFromParameters;
+    }
+    this.setSortType(index);
+    this.setDataArray();
+    this.setData();
+    this.drawMap();
   }
 
   countryChoosed(rowArray) {
     const [row] = rowArray;
+    this.setRegion(row);
+    this.setData();
+    this.drawMap();
     this.charty.setSelection([{ row }]);
   }
 
