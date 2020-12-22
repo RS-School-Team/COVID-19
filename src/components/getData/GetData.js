@@ -41,11 +41,6 @@ export default class GetData extends Component {
     this.events.addEventList('countryChoosed', [this.getDataByCountry.bind(this)]);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  perOneHundredThousands(population, cases) {
-    return cases / (population / 100000);
-  }
-
   async getInitData() {
     try {
       this.worldCasesForChart = await (
