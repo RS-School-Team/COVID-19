@@ -14,6 +14,10 @@ select{
   display: none;
 }
 .full-screen__button{
+  img{
+    width: 1rem;
+  }
+  line-height: 1rem;
   position: absolute;
   top: 0;
   right: 0;
@@ -29,10 +33,22 @@ select{
   padding: 1rem;
   position: fixed;
   overflow: hidden;
-top: 0;
-left: 0;
-height: 100vh;
-width: 100vw;
-background: #fff;
-z-index: 999;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #fff;
+  z-index: 999;
+  .full-screen__button{
+    top: 1rem;
+    right: 1rem;
+  }
+}
+.full-screen.country-cases__container{
+  vertical-align: middle;
+  padding-top: 25%;
+}
+
+.col-lg-8, .col-lg-4 {
+  max-height: 95vh;
 }

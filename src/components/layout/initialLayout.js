@@ -5,11 +5,13 @@ import Button from '../../elements';
 export default class InitialLayout extends Component {
   init(appTag) {
     this.fullScreenBtnMap = new Button('map', 'fullScreen', 'btn full-screen__button', 'X');
+    this.fullScreenBtnMap.setIcon(this.state.image[0]);
     this.fullScreenBtnChart = new Button('chart', 'fullScreen', 'btn full-screen__button', 'X');
+    this.fullScreenBtnChart.setIcon(this.state.image[0]);
     this.mainContainer = helper.create('main', 'container-fluid row');
     this.infoContainer = helper.create(
       'div',
-      'table-chart__container col-lg-4 col-md-12 py-3',
+      'table-chart__container col-lg-4 col-md-12 py-3 d-lg-flex flex-column justify-content-between',
       null,
       this.mainContainer
     );
@@ -21,7 +23,7 @@ export default class InitialLayout extends Component {
     );
     this.mapCasesContainer = helper.create(
       'div',
-      'col-lg-8 col-md-12 map-cases__container py-3 d-flex flex-column justify-between',
+      'col-lg-8 col-md-12 map-cases__container py-3 d-lg-flex flex-column-reverse justify-content-end',
       null,
       this.mainContainer
     );

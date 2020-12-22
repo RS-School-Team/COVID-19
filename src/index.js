@@ -1,15 +1,13 @@
 import './style.scss';
 import { APPCONTAINERCLASS, BODYTAG } from './constants/app-constants';
 import App from './app';
-import { simpleTag, qs } from './helper';
+import { create, qs } from './helper';
 
 document.addEventListener('DOMContentLoaded', () => {
   let appTag = qs(`${APPCONTAINERCLASS}`);
 
   if (!appTag) {
-    appTag = simpleTag({
-      classTag: `${APPCONTAINERCLASS}`,
-    });
+    appTag = create('div', `${APPCONTAINERCLASS}`);
 
     qs(BODYTAG).insertAdjacentElement('afterbegin', appTag);
   }

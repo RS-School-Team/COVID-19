@@ -1,3 +1,6 @@
 import { baseData, keys } from './baseData';
+import { importAll } from '../helper';
 
-export { baseData, keys };
+const image = importAll(require.context('./image', false, /\.(png|jpe?g|svg)$/));
+
+export { baseData, keys, image };
