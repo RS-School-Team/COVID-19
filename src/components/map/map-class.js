@@ -114,6 +114,8 @@ class Map extends Component {
     if (result) {
       const { row } = result;
       this.events.dispatchEvent('countryChoosed', row);
+    } else {
+      this.events.dispatchEvent('countryChoosed');
     }
   }
 }
