@@ -31,10 +31,14 @@ export default class CountryCasesTable extends Component {
         ['linked', linked]
       );
     });
-    const fullScreenButton = new Button('country-cases', 'fullScreen', 'btn full-screen__button');
+    const fullScreenButton = new Button(
+      'country-cases',
+      'fullScreen',
+      'btn btn-outline-secondary full-screen__button'
+    );
     fullScreenButton.setIcon(this.state.image[0]);
     this.date = helper.create('h5', 'data-date');
-    this.casesContainer = helper.create('div', 'country-cases__container', [
+    this.casesContainer = helper.create('div', 'country-cases__container mb-1', [
       helper.create('ul', 'nav nav-tabs', [...this.tabArr]),
       fullScreenButton.tag,
       helper.create(

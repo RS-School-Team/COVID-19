@@ -22,6 +22,11 @@ select{
   top: 0;
   right: 0;
   z-index: 500;
+  border: none;
+  border-radius: initial;
+  &:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 }
 .map__container, .chart__container{
   position: relative;
@@ -45,8 +50,6 @@ select{
   }
 }
 .full-screen.country-cases__container{
-  vertical-align: middle;
-  padding-top: 25%;
 }
 
 .col-lg-8, .col-lg-4 {

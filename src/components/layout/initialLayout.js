@@ -4,9 +4,19 @@ import Button from '../../elements';
 
 export default class InitialLayout extends Component {
   init(appTag) {
-    this.fullScreenBtnMap = new Button('map', 'fullScreen', 'btn full-screen__button', 'X');
+    this.fullScreenBtnMap = new Button(
+      'map',
+      'fullScreen',
+      'btn btn-outline-secondary full-screen__button',
+      'X'
+    );
     this.fullScreenBtnMap.setIcon(this.state.image[0]);
-    this.fullScreenBtnChart = new Button('chart', 'fullScreen', 'btn full-screen__button', 'X');
+    this.fullScreenBtnChart = new Button(
+      'chart',
+      'fullScreen',
+      'btn btn-outline-secondary full-screen__button',
+      'X'
+    );
     this.fullScreenBtnChart.setIcon(this.state.image[0]);
     this.mainContainer = helper.create('main', 'container-fluid row');
     this.infoContainer = helper.create(
