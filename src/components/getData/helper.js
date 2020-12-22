@@ -37,7 +37,9 @@ function getWorldDataForTable(worldCases) {
 
 function createCountryList(flags, data) {
   const countriesList = flags.slice().filter(country => {
-    const indexOfCountry = data.Countries.findIndex(elem => elem.Country === country.name);
+    const indexOfCountry = data.Countries.findIndex(
+      elem => elem.CountryCode === country.alpha2Code
+    );
     if (indexOfCountry !== -1) {
       country.slug = data.Countries[indexOfCountry].Slug;
       country.countryCode = data.Countries[indexOfCountry].CountryCode;
