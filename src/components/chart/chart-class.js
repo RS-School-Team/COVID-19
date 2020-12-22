@@ -25,21 +25,20 @@ class Graph extends Component {
   }
 
   createChartNav() {
-    this.state.data.sortTypes.map(elem =>
+    this.state.data.sortTypes.map((elem, index) =>
       helper.create(
         'option',
         'dropdown-item',
         elem[1],
         this.cartNav,
         ['name', elem[0]],
-        ['value', elem[0]]
+        ['value', index]
       )
     );
   }
 
   changeDataType(arg) {
-    [this.dataPath] = this.options.data.datasets;
-    if (typeof arg[0] === 'string') {
+    if (typeof this.ind === 'string') {
       [this.ind] = arg;
       if (this.ind < 6) {
         this.options.type = 'line';
@@ -48,17 +47,35 @@ class Graph extends Component {
         this.options.type = 'bar';
         this.dataPath.fill = true;
       }
+      this.cartNav[this.ind].selected = true;
+      const [, label] = this.state.data.sortTypes[this.ind];
+      this.dataPath.label = label;
+      this.chart.update();
     } else {
-      this.path = this.state.countryData;
-      this.title.innerText = this.path.label;
+      this.cartNav[0].selected = true;
     }
+  }
 
-    this.cartNav[this.ind].selected = true;
-    const [data, label] = this.state.data.sortTypes[this.ind];
-
+  countyChange() {
+    // if (!this.ind) this.ind = 0;
+    this.path = this.state.countryData;
+    this.title.innerText = this.path.label;
+    const [data] = this.state.data.sortTypes[this.ind];
     this.dataPath.data = this.path[data];
-    this.dataPath.label = label;
     this.chart.update();
+  }
+
+  resetChart(ind) {
+    const [index] = ind;
+    if (!index) {
+      this.ind = 0;
+      this.title.innerText = 'World Cases';
+      this.path = this.state.worldData.chartData;
+      this.dataPath.data = this.path.confirmed;
+      this.options.type = 'line';
+      this.dataPath.fill = false;
+      this.chart.update();
+    }
   }
 
   initChart() {
@@ -68,7 +85,7 @@ class Graph extends Component {
       type: 'line',
       // The data for our dataset
       data: {
-        labels: this.path.worldCasesDate,
+        labels: this.path.dates,
         datasets: [
           {
             label: 'Total Confirmed',
@@ -99,9 +116,12 @@ class Graph extends Component {
       },
     };
     this.chart = new Chart(this.chartContainer, this.options);
+
+    [this.dataPath] = this.options.data.datasets;
+
     this.events.addEventList('sortChanged', [(...args) => this.changeDataType(...args)]);
-    // this.events.addEventList('sortChanged', [this.changeDataType.bind(this)]);
-    this.events.addEventList('dataCountryGot', [this.changeDataType.bind(this)]);
+    this.events.addEventList('dataCountryGot', [this.countyChange.bind(this)]);
+    this.events.addEventList('countryChoosed', [this.resetChart.bind(this)]);
   }
 }
 
