@@ -27,6 +27,7 @@ class Map extends Component {
     this.events.addEventList('dataByCountryGot', [this.firstStart.bind(this)]);
     this.events.addEventList('countryChoosed', [this.countryChoosed.bind(this)]);
     this.events.addEventList('windowResized', [this.drawMap.bind(this)]);
+    this.events.addEventList('fullScreen', [this.drawMap.bind(this)]);
   }
 
   firstStart() {
