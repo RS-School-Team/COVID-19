@@ -51,6 +51,11 @@ const importAll = r => {
   return r.keys().map(r);
 };
 
+const importAllSVG = r => {
+  const names = [...r.keys()];
+  return [names, r.keys().map(r)];
+};
+
 const findTarget = (target, lookingAction) => {
   let pointTarget = target;
   while (pointTarget) {
@@ -73,4 +78,4 @@ const fullScreenSwitcher = name => {
   container.classList.toggle('full-screen');
 };
 
-export { create, importAll, findTarget, shuffle, qs, fullScreenSwitcher };
+export { create, importAll, findTarget, shuffle, qs, fullScreenSwitcher, importAllSVG };

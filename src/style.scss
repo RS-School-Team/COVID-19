@@ -28,6 +28,13 @@ select{
     background-color: rgba(0, 0, 0, 0.3);
   }
 }
+
+.btn{
+  svg {
+    height: 1rem;
+  }
+}
+
 .map__container, .chart__container{
   position: relative;
 }
