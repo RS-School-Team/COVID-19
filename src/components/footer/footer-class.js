@@ -16,22 +16,27 @@ class Footer extends Component {
       'text-right footer__button-opener',
       'footer'
     );
-    create('span', 'footer-year', null, null, '2020');
-    const githubOne = new Button();
-    const githubTwo = new Button();
-    const githubThree = new Button();
-    const RSSButton = new Button('footer__button-opener', 'footer-switch');
-    githubOne.setIcon(this.state.icons.getIcon('github'), 'svg');
-    githubTwo.setIcon(this.state.icons.getIcon('github'), 'svg');
-    githubThree.setIcon(this.state.icons.getIcon('github'), 'svg');
-    RSSButton.setIcon(this.state.icons.getIcon('rs_school_js'), 'svg');
     this.tag = create('div', 'footer__container', [openButton.tag], appTag);
-    this.row = create(
-      'div',
-      'footer__row row-fluid',
-      [githubOne.tag, githubTwo.tag, githubThree.tag, RSSButton.tag],
-      this.tag
-    );
+    this.row = create('div', 'footer__row row-fluid', null, this.tag);
+    create('span', 'footer-year', null, null, '2020');
+    const linksArr = [
+      ['803142', 'https://github.com/803142', 'github'],
+      ['diana-valeeva', 'https://github.com/diana-valeeva', 'github'],
+      ['shadezp', 'https://github.com/shadezp', 'github'],
+      ['RSSchool', 'https://rs.school/js/', 'rs_school_js'],
+    ];
+    linksArr.forEach(link => {
+      const [name, href, icon] = link;
+      create(
+        'a',
+        'btn',
+        this.state.icons.getIcon(icon, 'svg'),
+        this.row,
+        ['href', href],
+        ['title', name],
+        ['target', '_blank']
+      );
+    });
     create('span', 'footer-year', '2020', this.row);
     this.events.addEventList('footerSwitch', [this.show.bind(this)]);
   }

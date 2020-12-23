@@ -37,7 +37,7 @@ const create = (el, classNames, child, parent, ...dataAttr) => {
       if (attrValue === '') {
         element.setAttribute(attrName, '');
       }
-      if (attrName.match(/id|value|src|id|type|placeholder/)) {
+      if (attrName.match(/id|value|src|id|type|placeholder|href|alt|title|target/)) {
         element.setAttribute(attrName, attrValue);
       } else {
         element.dataset[attrName] = attrValue;
