@@ -27,7 +27,7 @@ export default class GlobalCasesTable extends Component {
           null,
           ['type', 'button'],
           ['click', 'countryChoosed'],
-          ['alt', 'Reset'],
+          ['title', 'Reset to Global'],
           ['name', '']
         )
       ),
