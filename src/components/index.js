@@ -4,6 +4,7 @@ import InitialLayout from './layout';
 import GlobalCasesTable from './globalTable';
 import CountryCasesTable from './countryCasesTable';
 import Graph from './chart';
+import Footer from './footer';
 
 class Components {
   constructor() {
@@ -13,6 +14,7 @@ class Components {
     this.CountryCasesTable = new CountryCasesTable();
     this.map = new Map();
     this.graph = new Graph();
+    this.footer = new Footer();
   }
 }
 

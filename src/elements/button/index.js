@@ -21,11 +21,17 @@ class Button {
     return this.buttonTag;
   }
 
-  setIcon(icon) {
+  setIcon(icon, format) {
     const image = new Image();
-    image.src = icon;
-    this.tag.innerHTML = '';
-    this.tag.appendChild(image);
+    switch (`${format}`) {
+      case 'svg':
+        this.tag.innerHTML = icon;
+        break;
+      default:
+        image.src = icon;
+        this.tag.innerHTML = '';
+        this.tag.appendChild(image);
+    }
   }
 
   setText(text) {
