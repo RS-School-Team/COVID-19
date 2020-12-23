@@ -49,9 +49,7 @@ select{
     right: 1rem;
   }
 }
-.full-screen.country-cases__container{
-}
-
+@media(min-width:1024px){
 .col-lg-8, .col-lg-4 {
   max-height: 95vh;
-}
+}}
