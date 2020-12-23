@@ -51,7 +51,12 @@ export default class GetData extends Component {
       this.worldCases = await extraFetch('http://api.covid19api.com/summary');
     }
 
-    if (this.worldCases) {
+    if (Array.isArray(this.worldCases.Countries)) {
+      if (this.worldCases.Message === 'Caching in progress') {
+        // eslint-disable-next-line no-alert
+        alert('Извините, API не работает, попробуйте позднее');
+        throw new Error('проблемы с https://api.covid19api.com/summary');
+      }
       this.state.worldData = getWorldDataForTable(this.worldCases);
       this.state.worldData.chartData = getWorldDataForChart(this.worldCasesForChart);
     }
@@ -65,11 +70,11 @@ export default class GetData extends Component {
     } catch (e) {
       console.log(e);
     }
-    if (this.flags && this.worldCases) {
-      console.log(this.worldCases.Message);
+    if (Array.isArray(this.flags) && Array.isArray(this.worldCases.Countries)) {
       if (this.worldCases.Message === 'Caching in progress') {
         // eslint-disable-next-line no-alert
         alert('Извините, API не работает, попробуйте позднее');
+        throw new Error('проблемы с https://api.covid19api.com/summary');
       }
       this.state.countriesList = createCountryList(this.flags, this.worldCases);
       this.events.dispatchEvent('dataByCountryGot');
