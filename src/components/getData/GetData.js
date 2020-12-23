@@ -66,6 +66,11 @@ export default class GetData extends Component {
       console.log(e);
     }
     if (this.flags && this.worldCases) {
+      console.log(this.worldCases.Message);
+      if (this.worldCases.Message === 'Caching in progress') {
+        // eslint-disable-next-line no-alert
+        alert('Извините API не работает, попробуйте позднее');
+      }
       this.state.countriesList = createCountryList(this.flags, this.worldCases);
       this.events.dispatchEvent('dataByCountryGot');
     }
