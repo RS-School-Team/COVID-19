@@ -1,3 +1,4 @@
 import Button from './button';
 
-export { Button };
+// eslint-disable-next-line import/prefer-default-export
+export default Button;

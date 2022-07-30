@@ -1,3 +1,66 @@
+@import "~bootstrap/scss/bootstrap";
+@import "components/globalTable/globalTable.scss";
+@import "components/countryCasesTable/countryCases.scss";
 .covid19{
   position: relative;
 }
+select{
+  cursor: pointer;
+  &:hover{
+    background-color: #6c757d;
+  }
+}
+.hidden{
+  display: none;
+}
+.full-screen__button{
+  img{
+    width: 1rem;
+  }
+  line-height: 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 500;
+  border: none;
+  border-radius: initial;
+  &:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.btn{
+  svg {
+    height: 1.2rem;
+  }
+}
+
+[class ~= __container] {
+  box-shadow: 0.3rem 0.4rem 0.3rem rgba(60, 60, 60, 0.09), -0.4rem -0.8rem 1rem rgba(255, 255, 255, 0.8), inset -0.9rem -0.4rem 0.8rem rgba(255, 255, 255, 0.9), inset 0.7rem 0.4rem 0.3rem rgba(0, 0, 0, 0.09);
+}
+
+.map__container, .chart__container{
+  position: relative;
+}
+.full-screen{
+  .list-group-flush{
+    height: 80vh;
+  }
+  padding: 1rem;
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #fff;
+  z-index: 999;
+  .full-screen__button{
+    top: 1rem;
+    right: 1rem;
+  }
+}
+@media(min-width:1024px){
+.col-lg-8, .col-lg-4 {
+  max-height: 95vh;
+}}

@@ -12,61 +12,34 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   devServer: {
-    contentBase: './dist',
+    static: path.join(__dirname, 'public'), // boolean | string | array | object, static file location
+    compress: true, // enable gzip compression
+    historyApiFallback: true, // true for index.html upon 404, object for multiple paths
+    hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
+    https: false,
   },
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /\.module\.s(a|c)ss$/,
-        loader: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              sourceMap: isDevelopment,
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: isDevelopment,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.s(a|c)ss$/,
-        exclude: /\.module.(s(a|c)ss)$/,
-        loader: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: isDevelopment,
-            },
-          },
+        test: /\.(sass|css|scss)$/,
+        use: [
+          'style-loader', // 3. Inject styles into DOM
+          'css-loader', // 2. Turns css into common JS
+          'sass-loader', // 1. Turns sass into css
         ],
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: ['babel-loader'],
       },
       {
-        test: /\.(svg|png|gif|jpg|webp)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'img',
-          },
-        },
+        test: /\.svg$/,
+        use: ['svg-inline-loader?classPrefix!'],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
+        type: 'asset/resource',
       },
       {
         test: /\.(mp3)$/i,
@@ -98,6 +71,7 @@ module.exports = {
       },
     ],
   },
+  devtool: 'inline-source-map',
   plugins: [
     new MiniCssExtractPlugin({
       filename: isDevelopment ? '[name].css' : '[name].[hash].css',

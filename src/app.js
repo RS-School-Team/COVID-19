@@ -16,10 +16,6 @@ class App extends Component {
     Object.keys(this.components).forEach(component => this.components[component].init(this.app));
   }
 
-  render() {
-    Object.keys(this.components).forEach(component => this.components[component].render(this.app));
-  }
-
   start() {
     this.app.addEventListener('click', clicked => {
       const { target } = clicked;
@@ -28,6 +24,25 @@ class App extends Component {
         this.events.dispatchEvent(action.toString(), name.toString());
       }
     });
+    this.app.addEventListener('change', clicked => {
+      const { target } = clicked;
+      if (findTarget(target, 'change')) {
+        const { action } = findTarget(target, 'change');
+        const name = target.value;
+        this.events.dispatchEvent(action.toString(), name.toString());
+      }
+    });
+    this.app.addEventListener('input', clicked => {
+      const { target } = clicked;
+      if (findTarget(target, 'input')) {
+        const { action } = findTarget(target, 'input');
+        const name = target.value;
+        this.events.dispatchEvent(action.toString(), name.toString());
+      }
+    });
+    window.onresize = () => {
+      this.events.dispatchEvent('windowResized');
+    };
   }
 }
 

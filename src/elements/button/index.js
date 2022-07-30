@@ -1,4 +1,4 @@
-import { simpleTag } from '../../helper';
+import { create } from '../../helper';
 
 class Button {
   constructor(name, action, classTag, text) {
@@ -10,25 +10,28 @@ class Button {
   }
 
   render() {
-    this.buttonTag = simpleTag(
-      {
-        tagName: 'button',
-        classTag: `btn ${this.class}`,
-        advanced: {
-          'data-click': this.action,
-          'data-name': this.name,
-        },
-      },
-      this.text
+    this.buttonTag = create(
+      'button',
+      `btn ${this.class}`,
+      this.text,
+      null,
+      ['click', this.action],
+      ['name', this.name]
     );
     return this.buttonTag;
   }
 
-  setIcon(icon) {
+  setIcon(icon, format) {
     const image = new Image();
-    image.src = icon;
-    this.tag.innerHTML = '';
-    this.tag.appendChild(image);
+    switch (`${format}`) {
+      case 'svg':
+        this.tag.innerHTML = icon;
+        break;
+      default:
+        image.src = icon;
+        this.tag.innerHTML = '';
+        this.tag.appendChild(image);
+    }
   }
 
   setText(text) {

@@ -1,4 +1,4 @@
-const shuffle = arr => {
+const shuffle = (arr) => {
   const result = [...arr];
   let j;
   let temp;
@@ -10,29 +10,48 @@ const shuffle = arr => {
   }
   return result;
 };
+const create = (el, classNames, child, parent, ...dataAttr) => {
+  let element = null;
+  try {
+    element = document.createElement(el);
+  } catch (error) {
+    throw new Error('Unable to create HTMLElement! Give a proper tag name');
+  }
 
-const simpleTag = (elementInfo = {}, dynamicData) => {
-  const { tagName = 'div', classTag = 'block', content, advanced } = elementInfo;
-  const tag = document.createElement(tagName);
-  const advancedProperties = ([name, value]) => {
-    tag.setAttribute(name, value);
-  };
+  if (classNames) element.classList.add(...classNames.split(' '));
 
-  tag.className = classTag;
-  if (advanced) {
-    Object.entries(advanced).forEach(advancedProperties);
+  if (child && Array.isArray(child)) {
+    child.forEach((childElement) => childElement && element.appendChild(childElement));
+  } else if (child && typeof child === 'object') {
+    element.appendChild(child);
+  } else if (child && typeof child === 'string') {
+    element.innerHTML = child;
   }
-  if (content) {
-    tag.innerHTML = content;
+
+  if (parent) {
+    parent.appendChild(element);
   }
-  if (dynamicData) {
-    tag.innerHTML = dynamicData;
+
+  if (dataAttr.length) {
+    dataAttr.forEach(([attrName, attrValue]) => {
+      if (attrValue === '') {
+        element.setAttribute(attrName, '');
+      }
+      if (attrName.match(/id|value|src|id|type|placeholder|href|alt|title|target/)) {
+        element.setAttribute(attrName, attrValue);
+      } else {
+        element.dataset[attrName] = attrValue;
+      }
+    });
   }
-  return tag;
+  return element;
 };
 
-const importAll = r => {
-  return r.keys().map(r);
+const importAll = (r) => r.keys().map(r);
+
+const importAllSVG = (r) => {
+  const names = [...r.keys()];
+  return [names, r.keys().map(r)];
 };
 
 const findTarget = (target, lookingAction) => {
@@ -52,4 +71,9 @@ const findTarget = (target, lookingAction) => {
 
 const qs = (selector, scope) => (scope || document).querySelector(selector);
 
-export { simpleTag, importAll, findTarget, shuffle, qs };
+const fullScreenSwitcher = (name) => {
+  const container = qs(`.${name}__container`);
+  container.classList.toggle('full-screen');
+};
+
+export { create, importAll, findTarget, shuffle, qs, fullScreenSwitcher, importAllSVG };
