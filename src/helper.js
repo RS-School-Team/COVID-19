@@ -1,4 +1,4 @@
-const shuffle = arr => {
+const shuffle = (arr) => {
   const result = [...arr];
   let j;
   let temp;
@@ -21,7 +21,7 @@ const create = (el, classNames, child, parent, ...dataAttr) => {
   if (classNames) element.classList.add(...classNames.split(' '));
 
   if (child && Array.isArray(child)) {
-    child.forEach(childElement => childElement && element.appendChild(childElement));
+    child.forEach((childElement) => childElement && element.appendChild(childElement));
   } else if (child && typeof child === 'object') {
     element.appendChild(child);
   } else if (child && typeof child === 'string') {
@@ -47,11 +47,9 @@ const create = (el, classNames, child, parent, ...dataAttr) => {
   return element;
 };
 
-const importAll = r => {
-  return r.keys().map(r);
-};
+const importAll = (r) => r.keys().map(r);
 
-const importAllSVG = r => {
+const importAllSVG = (r) => {
   const names = [...r.keys()];
   return [names, r.keys().map(r)];
 };
@@ -73,7 +71,7 @@ const findTarget = (target, lookingAction) => {
 
 const qs = (selector, scope) => (scope || document).querySelector(selector);
 
-const fullScreenSwitcher = name => {
+const fullScreenSwitcher = (name) => {
   const container = qs(`.${name}__container`);
   container.classList.toggle('full-screen');
 };

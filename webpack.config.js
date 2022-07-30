@@ -38,14 +38,8 @@ module.exports = {
         use: ['svg-inline-loader?classPrefix!'],
       },
       {
-        test: /\.(png|gif|jpg|webp)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'img',
-          },
-        },
+        test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
+        type: 'asset/resource',
       },
       {
         test: /\.(mp3)$/i,
