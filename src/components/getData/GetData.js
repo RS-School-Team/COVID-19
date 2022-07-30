@@ -63,13 +63,7 @@ export default class GetData extends Component {
   }
 
   async getCountryList() {
-    try {
-      this.flags = await (
-        await fetch('https://restcountries.eu/rest/v2/all?fields=name;population;flag;alpha2Code')
-      ).json();
-    } catch (e) {
-      console.log(e);
-    }
+    this.flags = this.state.countries.filter((countrie) => countrie.population);
     if (Array.isArray(this.flags) && Array.isArray(this.worldCases.Countries)) {
       if (this.worldCases.Message === 'Caching in progress') {
         // eslint-disable-next-line no-alert
@@ -100,6 +94,7 @@ export default class GetData extends Component {
           this.state.countriesList[index].population
         );
       }
+      console.log('dataCountryGot');
       this.events.dispatchEvent('dataCountryGot');
     }
   }

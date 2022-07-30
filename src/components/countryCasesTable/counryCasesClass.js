@@ -18,7 +18,7 @@ export default class CountryCasesTable extends Component {
       [6, 'newConfirmed newDeath newRecovered'],
       [9, 'newConfirmedPOHT newDeathPOHT newRecoveredPOHT'],
     ];
-    this.tabArr = datasetArray.map(elem => {
+    this.tabArr = datasetArray.map((elem) => {
       const [name, linked] = elem;
       const [, tabHeader] = this.state.data.sortTypes[name];
       return helper.create(
@@ -125,7 +125,7 @@ export default class CountryCasesTable extends Component {
     const [sort] = this.state.data.sortTypes[index];
     const pref = sort.match('new') ? 'new' : '';
     const suff = sort.match('POHT') ? 'POHT' : '';
-    this.tabArr.map(elem =>
+    this.tabArr.map((elem) =>
       elem.dataset.linked.split(' ').includes(sort)
         ? elem.classList.add('active')
         : elem.classList.remove('active')

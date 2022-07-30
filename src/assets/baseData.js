@@ -1,3 +1,7 @@
+import countriesJ from './countries.json';
+
+const countries = JSON.parse(JSON.stringify(countriesJ));
+
 const baseData = {
   dayInfo: {},
   sortTypes: [
@@ -20,4 +24,4 @@ const keys = {
   mapsApiKey: 'mapAPIKey',
 };
 
-export { baseData, keys };
+export { baseData, keys, countries };

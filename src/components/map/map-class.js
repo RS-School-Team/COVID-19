@@ -66,7 +66,7 @@ class Map extends Component {
 
   setDataArray() {
     const { countriesList } = this.state;
-    this.dataArray = countriesList.map(country => {
+    this.dataArray = countriesList.map((country) => {
       const { countryCode, name } = country;
       const information = country[this.sortType];
       return [countryCode, name, information];

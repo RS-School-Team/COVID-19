@@ -36,9 +36,9 @@ function getWorldDataForTable(worldCases) {
 }
 
 function createCountryList(flags, data) {
-  const countriesList = flags.slice().filter(country => {
+  const countriesList = flags.slice().filter((country) => {
     const indexOfCountry = data.Countries.findIndex(
-      elem => elem.CountryCode === country.alpha2Code
+      (elem) => elem.CountryCode === country.alpha2Code
     );
     if (indexOfCountry !== -1) {
       country.slug = data.Countries[indexOfCountry].Slug;
@@ -103,13 +103,13 @@ function getWorldDataForChart(worldCases) {
   data.death = deaths;
   data.recovered = recovered;
 
-  data.newConfirmedPOHT = data.newConfirmed.map(e => POHT(population, e));
-  data.newDeathPOHT = data.newDeath.map(e => POHT(population, e));
-  data.newRecoveredPOHT = data.newRecovered.map(e => POHT(population, e));
+  data.newConfirmedPOHT = data.newConfirmed.map((e) => POHT(population, e));
+  data.newDeathPOHT = data.newDeath.map((e) => POHT(population, e));
+  data.newRecoveredPOHT = data.newRecovered.map((e) => POHT(population, e));
 
-  data.confirmedPOHT = data.confirmed.map(e => POHT(population, e));
-  data.deathPOHT = data.death.map(e => POHT(population, e));
-  data.recoveredPOHT = data.recovered.map(e => POHT(population, e));
+  data.confirmedPOHT = data.confirmed.map((e) => POHT(population, e));
+  data.deathPOHT = data.death.map((e) => POHT(population, e));
+  data.recoveredPOHT = data.recovered.map((e) => POHT(population, e));
   return data;
 }
 

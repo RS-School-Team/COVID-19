@@ -1,4 +1,4 @@
-import { baseData, keys, image, icons } from '../../assets';
+import { baseData, keys, image, icons, countries } from '../../assets';
 
 class Storage {
   constructor() {
@@ -8,6 +8,7 @@ class Storage {
     this.apiKey = keys;
     this.image = image;
     this.icons = icons;
+    this.countries = countries;
   }
 
   toLocalStorage() {
